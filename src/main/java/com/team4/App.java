@@ -6,7 +6,9 @@ package com.team4;
 public class App {
 
     public static void main(String[] args) {
-        JudgeSystem autoJudge = new JudgeSystem("Submissions.zip");
+        AutoJudge autoJudge = new AutoJudgeSystem("Submissions.zip");
         autoJudge.evaluateSubmissions();
+        autoJudge.generatePDFReport();
+        autoJudge.displayEvaluationResults();
     }
 }
