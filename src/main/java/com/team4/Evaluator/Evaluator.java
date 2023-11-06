@@ -32,7 +32,13 @@ public class Evaluator {
     
     // Methods
 
-    public double runEvaluators(ArrayList<File> submissions) {
+    /**
+     * Evaluates all the submissions with all the evaluators supplied (all by default)
+     * and returns the overall score
+     * @param submissions ArrayList of files to be evaluated
+     * @return The overall score of the submissions
+     */
+    public double evaluate(ArrayList<File> submissions) {
 
         // For each submission
         for (File submission : submissions) {
@@ -43,6 +49,6 @@ public class Evaluator {
             }
         }
 
-        return this.score;
+        return (double) this.score / (double) submissions.size();
     }
 }
