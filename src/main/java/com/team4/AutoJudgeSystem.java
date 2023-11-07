@@ -1,7 +1,8 @@
 package com.team4;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.TreeMap;
 
 import com.team4.Evaluator.Evaluator;
 
@@ -10,9 +11,9 @@ public class AutoJudgeSystem implements AutoJudge {
     // Attributes
     private String resourcesPath;
     private String zippedSubmissionsFilename;
-    private ArrayList<File> submissions;
+    private TreeMap<String, LinkedList<File>> submissions;
     private Evaluator evaluator;
-    private FileDecompressor fileDecompressor;
+    private SubmissionDecompressor submissionDecompressor;
     private double overallScore;
 
 
@@ -23,7 +24,7 @@ public class AutoJudgeSystem implements AutoJudge {
     public AutoJudgeSystem(String zippedSubmissionsFilename) {
         this.setResourcesPath();
         this.zippedSubmissionsFilename = zippedSubmissionsFilename;
-        this.submissions = new ArrayList<File>();
+        this.submissions = new TreeMap<>();
         this.evaluator = new Evaluator();
         this.overallScore = 0.0;
     }
@@ -37,7 +38,7 @@ public class AutoJudgeSystem implements AutoJudge {
     public AutoJudgeSystem(String resourcesPath, String zippedSubmissionsFilename) {
         this.setResourcesPath(resourcesPath);
         this.zippedSubmissionsFilename = zippedSubmissionsFilename;
-        this.submissions = new ArrayList<File>();
+        this.submissions = new TreeMap<>();
         this.evaluator = new Evaluator();
         this.overallScore = 0.0;
     }
@@ -49,7 +50,7 @@ public class AutoJudgeSystem implements AutoJudge {
         return this.resourcesPath;
     }
 
-    public ArrayList<File> getSubmissions() {
+    public TreeMap<String, LinkedList<File>> getSubmissions() {
         return this.submissions;
     }
 
@@ -80,19 +81,24 @@ public class AutoJudgeSystem implements AutoJudge {
 
     @Override
     public void evaluateSubmissions() {
-        this.fileDecompressor = new FileDecompressor(this.resourcesPath, this.zippedSubmissionsFilename);
+        this.submissionDecompressor = new SubmissionDecompressor(this.resourcesPath, this.zippedSubmissionsFilename);
         System.out.println("Evaluating submissions...");
         System.out.println("Unzipping submission files... (" + this.zippedSubmissionsFilename + ")");
 
         // Safely decompress submissions, else hard exit
-        try { this.submissions = this.fileDecompressor.decompress(); }
+        try { this.submissions = this.submissionDecompressor.decompress(); }
         catch (Exception e) { 
             e.printStackTrace();
             System.exit(1);
         }
         
         // Run evaluation on submissions using Evaluator
-        this.overallScore = this.evaluator.evaluate(this.submissions);
+        for (int i = 0; i < this.submissions.size(); i++) {
+            String submissionName = this.submissions.keySet().toArray()[i].toString();
+            System.out.print("Evaluating " + (i + 1) + " of " + this.submissions.size() + " (");
+            System.out.println(submissionName + ")");
+            this.overallScore += this.evaluator.evaluate(this.submissions.get(submissionName));
+        }
 
         System.out.println("Evaluation complete.");
     }
