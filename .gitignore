@@ -3,3 +3,4 @@
 *.iws
 *.ipr
 target/
+src/test/resources/Submissions
