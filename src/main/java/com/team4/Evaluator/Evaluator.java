@@ -3,6 +3,7 @@ package com.team4.Evaluator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class Evaluator {
     
@@ -35,10 +36,10 @@ public class Evaluator {
     /**
      * Evaluates all the submissions with all the evaluators supplied (all by default)
      * and returns the overall score
-     * @param submissions ArrayList of files to be evaluated
+     * @param submissions List of files to be evaluated
      * @return The overall score of the submissions
      */
-    public double evaluate(ArrayList<File> submissions) {
+    public double evaluate(LinkedList<File> submissions) {
 
         // For each submission
         for (File submission : submissions) {
