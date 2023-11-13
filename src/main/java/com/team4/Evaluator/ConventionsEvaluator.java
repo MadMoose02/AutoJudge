@@ -2,11 +2,11 @@ package com.team4.Evaluator;
 
 import java.io.File;
 
-public class NamingConventionsEvaluator implements SyntaxEvaluator {
+public class ConventionsEvaluator implements SyntaxEvaluator {
     
     private double score;
 
-    public NamingConventionsEvaluator() {
+    public ConventionsEvaluator() {
         this.score = 0.0;
     }
 
