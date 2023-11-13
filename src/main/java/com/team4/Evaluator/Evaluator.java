@@ -17,7 +17,7 @@ public class Evaluator implements SyntaxEvaluator {
     public Evaluator() {
         this.evaluators = new ArrayList<SyntaxEvaluator>();
         this.evaluators.add(new HierarchyEvaluator());
-        this.evaluators.add(new NamingConventionsEvaluator());
+        this.evaluators.add(new ConventionsEvaluator());
         this.score = 0.0;
     }
 
@@ -35,7 +35,6 @@ public class Evaluator implements SyntaxEvaluator {
 
     @Override
     public double evaluate(File javaDocument) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'evaluate'");
+        return (double) this.score;
     }
 }
