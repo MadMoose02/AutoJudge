@@ -18,6 +18,7 @@ public class Evaluator implements SyntaxEvaluator {
         this.evaluators = new ArrayList<SyntaxEvaluator>();
         this.evaluators.add(new HierarchyEvaluator());
         this.evaluators.add(new ConventionsEvaluator());
+        this.evaluators.add(new BehaviourEvaluator());
         this.score = 0.0;
     }
 
