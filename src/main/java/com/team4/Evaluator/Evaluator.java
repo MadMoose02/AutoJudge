@@ -35,6 +35,9 @@ public class Evaluator implements SyntaxEvaluator {
 
     @Override
     public double evaluate(File javaDocument) {
-        return (double) this.score;
+        for (SyntaxEvaluator evaluator : this.evaluators) {
+            this.score += evaluator.evaluate(javaDocument);
+        }
+        return this.score;
     }
 }
