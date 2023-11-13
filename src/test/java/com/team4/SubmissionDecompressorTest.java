@@ -20,11 +20,11 @@ public class SubmissionDecompressorTest {
     }
     
     @Test
-    public void testFileExtraction() {
+    public void testFolderExtraction() {
         System.out.println("Testing File Extraction...");
 
         this.setResourcesPath();
-        String zipFilename = "Submissions.zip";
+        String zipFilename = "Submissions - Copy.zip";
         SubmissionDecompressor sd = new SubmissionDecompressor();
         TreeMap<String, File> tm = new TreeMap<>();
 
