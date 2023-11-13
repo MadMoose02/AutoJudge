@@ -10,8 +10,5 @@ public class App {
         autoJudge.evaluateSubmissions();
         autoJudge.generatePDFReport();
         autoJudge.displayEvaluationResults();
-        System.out.println("ghh");
-        System.out.println("Helllo World");
-
     }
 }
