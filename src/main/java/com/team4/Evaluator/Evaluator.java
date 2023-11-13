@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class Evaluator {
+public class Evaluator implements SyntaxEvaluator {
     
     // Attributes
     private Collection<SyntaxEvaluator> evaluators;
@@ -33,23 +33,9 @@ public class Evaluator {
     
     // Methods
 
-    /**
-     * Evaluates all the submissions with all the evaluators supplied (all by default)
-     * and returns the overall score
-     * @param submissions List of files to be evaluated
-     * @return The overall score of the submissions
-     */
-    public double evaluate(LinkedList<File> submissions) {
-
-        // For each submission
-        for (File submission : submissions) {
-
-            // Evaluate submission with each evaluator
-            for (SyntaxEvaluator evaluator : this.evaluators) {
-                this.score += evaluator.evaluate(submission);
-            }
-        }
-
-        return (double) this.score / (double) submissions.size();
+    @Override
+    public double evaluate(File javaDocument) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'evaluate'");
     }
 }
