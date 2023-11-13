@@ -10,5 +10,6 @@ public class App {
         autoJudge.evaluateSubmissions();
         autoJudge.generatePDFReport();
         autoJudge.displayEvaluationResults();
+        System.out.println("ghh");
     }
 }
