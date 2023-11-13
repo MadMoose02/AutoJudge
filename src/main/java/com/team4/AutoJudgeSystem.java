@@ -105,13 +105,7 @@ public class AutoJudgeSystem implements AutoJudge {
         // }
         
         // Run evaluation on submissions using Evaluator
-        // for (int i = 0; i < this.submissions.size(); i++) {
-        //     String submissionName = this.submissions.keySet().toArray()[i].toString();
-        //     System.out.print("Evaluating " + (i + 1) + " of " + this.submissions.size() + " (");
-        //     System.out.println(submissionName + ")");
-        //     this.overallScore += this.evaluator.evaluate(this.submissions.get(submissionName));
-        // }
-
+        evaluator.evaluate(null);
         System.out.println("Evaluation complete.");
     }
 
