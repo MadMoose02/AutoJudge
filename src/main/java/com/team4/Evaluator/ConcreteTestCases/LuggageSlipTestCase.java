@@ -32,8 +32,10 @@ public class LuggageSlipTestCase extends TestCase {
 
     @Override
     public boolean testCriteria() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'testCriteria'");
+        if(testConstructor() && testOverloadedConstructor() && testHasOwner() && testToString()){
+            return true;
+        }
+        return false;
     }
     
 }
