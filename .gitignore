@@ -2,6 +2,7 @@
 *.iml
 *.iws
 *.ipr
+.vscode/
 target/
 src/test/resources/Submissions
 src/main/resources/Submissions
