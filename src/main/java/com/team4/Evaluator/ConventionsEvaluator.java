@@ -1,6 +1,8 @@
 package com.team4.Evaluator;
 
 import java.io.File;
+import java.util.Scanner;
+
 
 public class ConventionsEvaluator implements SyntaxEvaluator {
     
@@ -149,12 +151,43 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
 
 
-
+    
 
 
 
     @Override
     public double evaluate(File javaDocument) {
-        return this.score;
+
+       
+        try {
+
+            Scanner sc = new Scanner(javaDocument); 
+            
+            while(sc.hasNextLine()){
+                String line = sc.nextLine() ; 
+
+
+
+            }
+            
+            
+            
+       sc.close() ;
+        }
+        
+        catch(Exception e){
+            System.out.println(" "+ e.getMessage() + " ") ;
+        }
+        
+        
+
+        
+
+
+
+        return this.score; 
+
+    
     }
+    
 }
