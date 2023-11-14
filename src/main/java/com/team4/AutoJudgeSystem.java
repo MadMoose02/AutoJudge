@@ -103,8 +103,11 @@ public class AutoJudgeSystem implements AutoJudge {
         }
 
         // Put submission entries into submissions HashMap
-        for (String submissionName : submissionsFolder.keySet()) {
-            try { this.submissions.put(submissionName, this.submissionDecompressor.decompress()); }
+        for (String submission : submissionsFolder.keySet()) {
+            this.submissionDecompressor = new SubmissionDecompressor(
+                this.resourcesPath + File.separator + submission
+            );
+            try { this.submissions.put(submission, this.submissionDecompressor.decompress()); }
             catch (Exception e) { 
                 e.printStackTrace();
                 System.exit(1);
