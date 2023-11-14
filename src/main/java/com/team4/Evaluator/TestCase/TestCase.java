@@ -1,22 +1,30 @@
 package com.team4.Evaluator.TestCase;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class TestCase implements AbstractTestCase {
 
+    protected final static int MAX_LINES = 200; 
     protected String testName;
     protected File testFile;
+    protected ArrayList<String> parameters;
+    protected ArrayList<String> feedbackComments;
 
-    public TestCase(String testName, File testFile) {
+    public TestCase(String testName, File testFile, String[] parameters) {
         this.testName = testName;
         this.testFile = testFile;
+        this.parameters = parameters != null ? new ArrayList<>(List.of(parameters)) : null;
+        this.feedbackComments = new ArrayList<>();
     }
 
     // Abstract method
-    public abstract boolean testCriteria();
+    public abstract boolean testCriteria() throws Exception;
 
     // Template method
-    public final boolean runTest() {
+    public final boolean runTest() throws Exception {
+        System.out.println("Running Test Case: " + this.testName);
         return this.testCriteria();
     }
 }
