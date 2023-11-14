@@ -37,8 +37,10 @@ public class LuggageManifestTestCase extends TestCase {
 
     @Override
     public boolean testCriteria() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'testCriteria'");
+        if (testConstructor() && testAddLuggage() && testGetExcessLuggage() && testToString()){
+            return true;
+        }
+        return false;
     }
     
 }
