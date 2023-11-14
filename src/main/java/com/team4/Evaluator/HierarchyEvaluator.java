@@ -32,33 +32,27 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         return false;
     }
 
+    private void toString (File javaDocument, String associationClass1, String associationClass2){
+        if (checksAssociation(javaDocument, associationClass2)){
+            System.out.println("There exists an association between the " + associationClass1 + " and " + associationClass2 + " classes");
+        }
+
+        else{
+             System.out.println("No association found between the " + associationClass1 + " and " + associationClass2 + " classes");
+        }
+    }
+
     @Override
     public double evaluate(File javaDocument) {
         String filename = javaDocument.getName();
 
         if (filename == "LuggageManagementSystem"){
-            if (checksAssociation(javaDocument, "Flight")){
-                System.out.println("There exists an association between the LuggageManagementSystem and Flight classes");
-            }
-            else{
-                System.out.println("No association between the LuggageManagementSystem and Flight classes");
-            }
-
-            if (checksAssociation(javaDocument, "Passenger")){
-                System.out.println("There exists an association between the LuggageManagementSystem and Passenger classes");
-            }
-            else{
-                System.out.println("No association between the LuggageManagementSystem and Passenger classes");
-            }
+            toString(javaDocument, filename, "Flight");
+            toString(javaDocument, filename, "Passenger");
         }
 
         if (filename == "LuggageManifest"){
-            if (checksAssociation(javaDocument, "LuggageSlip")){
-                System.out.println("There exists an association between the LuggageManifest and LuggageSlip classes");
-            }
-            else{
-                System.out.println("No association between the LuggageManifest and LuggageSlip classes");
-            }
+            toString(javaDocument, filename, "LuggageSlip");
         }
         return this.score;
     }
