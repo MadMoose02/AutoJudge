@@ -65,13 +65,15 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
 
     //take in line , or // take in parameters 
-    private boolean AttributeSyntaxCheck ( String AttributeLine ){ // check static 
+    private boolean AttributeSyntaxCheck ( String AttributeLine ){ 
 
         String[] AccessModifier = AttributeLine.split(" "); 
 
-     
+        if( AccessModifier.length < 1){
+            return false ; 
+        }
 
-        if ( AccessModifier.length <= 2 ){
+        else if ( AccessModifier.length <= 2 ){
 
         if ((AccessModifier[0].equals("private")||AccessModifier[0].equals("public")||AccessModifier[0].equals("protected")
         && validDataTypes(AccessModifier[1])) && isCamelCase(AccessModifier[2])) {
@@ -94,13 +96,21 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
         }
 
+     
+        else
+        return false ; 
 
-
-        
-
-
+    
 
     }
+
+
+    // !if syntax , does not match up with required doc then fail 
+
+    public boolean MethodCompare ( String expectedReturnType , String actualReturnType ){
+        return expectedReturnType.equals(actualReturnType); 
+    }
+
 
 
     public ConventionsEvaluator() {
@@ -134,6 +144,8 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
 
 
+
+    // !how do we know when the attribtues are done then move to constructor 
 
 
 
