@@ -94,7 +94,7 @@ public class AutoJudgeSystem implements AutoJudge {
     @Override
     public void evaluateSubmissions() {
         displayLaunchMessage();
-        System.out.println("Evaluating submissions...");
+        System.out.println("<-- Submission Evaluation -->");
         System.out.println("Unzipping submission files... (" + this.zippedSubmissionsFilename + ")");
 
         // Safely decompress submissions, else hard exit
@@ -121,7 +121,7 @@ public class AutoJudgeSystem implements AutoJudge {
     @Override
     public void displayEvaluationResults() {
         System.out.println("\n<--- Evaluation Breakdown --->");
-        System.out.println("Overall score: " + this.overallScore);
+        System.out.println("Overall score: " + this.overallScore + "%");
         System.out.println("\n\n<--- Test Breakdown --->");
     }
 }

@@ -39,6 +39,6 @@ public class Evaluator implements SyntaxEvaluator {
         for (SyntaxEvaluator evaluator : this.evaluators) {
             this.score += evaluator.evaluate(javaDocument);
         }
-        return this.score;
+        return (this.score) / ((double) this.evaluators.size()) * 100.0;
     }
 }
