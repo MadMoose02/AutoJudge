@@ -94,19 +94,33 @@ public class AutoJudgeSystem implements AutoJudge {
         System.out.println();
     }
 
+    private final void extractSubmissions() {
+        TreeMap<String, File> submissionsFolder = new TreeMap<>();
+        try { submissionsFolder = this.submissionDecompressor.decompress(); }
+        catch (Exception e) { 
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // Put submission entries into submissions HashMap
+        for (String submissionName : submissionsFolder.keySet()) {
+            try { this.submissions.put(submissionName, this.submissionDecompressor.decompress()); }
+            catch (Exception e) { 
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+        System.out.println("Number of submissions: " + this.submissions.size());
+    }
 
     @Override
     public void evaluateSubmissions() {
         displayLaunchMessage();
         System.out.println("<-- Submission Evaluation -->");
-        System.out.println("Unzipping submission files... (" + this.zippedSubmissionsFilename + ")");
+        System.out.println("Extracting submissions... (" + this.zippedSubmissionsFilename + ")");
 
-        // Safely decompress submissions, else hard exit
-        // try { this.submissions = this.submissionDecompressor.decompress(); }
-        // catch (Exception e) { 
-        //     e.printStackTrace();
-        //     System.exit(1);
-        // }
+        // Safely decompress submissions zip folder, else hard exit
+        this.extractSubmissions();
         
         // Run evaluation on submissions using Evaluator
         evaluator.evaluate(null);
