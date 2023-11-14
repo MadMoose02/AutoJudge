@@ -4,3 +4,4 @@
 *.ipr
 target/
 src/test/resources/Submissions
+src/main/resources/Submissions
