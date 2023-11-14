@@ -125,7 +125,7 @@ public class AutoJudgeSystem implements AutoJudge {
 
     @Override
     public void evaluateSubmissions() {
-        displayLaunchMessage();
+        // displayLaunchMessage();
         System.out.println("<-- Submission Evaluation -->");
         System.out.println("Extracting submissions... (" + this.zippedSubmissionsFilename + ")");
 
