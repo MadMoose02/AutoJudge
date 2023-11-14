@@ -98,7 +98,9 @@ public class SubmissionDecompressor {
                 }
                 
                 zipInputStream.closeEntry();
-                this.extractedFiles.put(entryName, new File(filePath));
+                if (entryName.endsWith(".java") || entryName.endsWith(".zip")) {
+                    this.extractedFiles.put(entryName, new File(filePath));
+                }
                 entry = zipInputStream.getNextEntry();
             }
         }
