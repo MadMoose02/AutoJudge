@@ -12,40 +12,54 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         this.score = 0.0;
     }
 
-    private boolean checksAssociation (File javaFile){
-        Boolean flightAssociation = false;
-        Boolean passengerAssociation = false;
-
-        try {
-            try (Scanner scan = new Scanner(javaFile)) {
-                while (scan.hasNext()) {
-                    if (scan.next() == "Flight" || scan.next() == "ArrayList<Flight>"){
-                        flightAssociation = true ;
-                    }
-
-                    if (scan.next() == "Passenger" || scan.next() == "ArrayList<Passenger>"){
-                        passengerAssociation = true;
-                    }
+    //associationClass - eg. Flight/Passenger/LuggageSlip
+    private boolean checksAssociation (File javaFile, String associationClass){
+        try (Scanner scan = new Scanner(javaFile)) {
+            while (scan.hasNext()) {
+                String line = scan.nextLine();
+                
+                if (line.contains(associationClass)){
+                    return true;
                 }
-                scan.close();
             }
-            if (flightAssociation == true && passengerAssociation == true){
-                return true;
-            }
-            else{
-                return false;
-            }
-            
-        } 
+            scan.close();
+            return false;    
+        }
+
         catch (FileNotFoundException e) {
             System.out.print("File Not Found");
         }
-
-        return true;
+        return false;
     }
 
     @Override
     public double evaluate(File javaDocument) {
+        String filename = javaDocument.getName();
+
+        if (filename == "LuggageManagementSystem"){
+            if (checksAssociation(javaDocument, "Flight")){
+                System.out.println("There exists an association between the LuggageManagementSystem and Flight classes");
+            }
+            else{
+                System.out.println("No association between the LuggageManagementSystem and Flight classes");
+            }
+
+            if (checksAssociation(javaDocument, "Passenger")){
+                System.out.println("There exists an association between the LuggageManagementSystem and Passenger classes");
+            }
+            else{
+                System.out.println("No association between the LuggageManagementSystem and Passenger classes");
+            }
+        }
+
+        if (filename == "LuggageManifest"){
+            if (checksAssociation(javaDocument, "LuggageSlip")){
+                System.out.println("There exists an association between the LuggageManifest and LuggageSlip classes");
+            }
+            else{
+                System.out.println("No association between the LuggageManifest and LuggageSlip classes");
+            }
+        }
         return this.score;
     }
     
