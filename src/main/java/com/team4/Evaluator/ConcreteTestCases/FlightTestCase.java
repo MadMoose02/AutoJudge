@@ -1,6 +1,8 @@
 package com.team4.Evaluator.ConcreteTestCases;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import com.team4.Evaluator.TestCase.TestCase;
 
@@ -13,8 +15,37 @@ public class FlightTestCase extends TestCase {
     }
 
     public boolean testConstructor(){
+        try {
+            try (Scanner scan = new Scanner(testFile)) {
+                while (scan.hasNext()) {
+                    
+                    if (scan.next() == "this.flightNo." && scan.findInLine("=") == null){
+                        return false;
+                    };
 
-        return false;
+                    if (scan.nextLine() == "this.destination" && scan.findInLine("=") == null){
+                        return false;
+                    };
+
+                    if (scan.nextLine() == "this.origin" && scan.findInLine("=") == null){
+                        return false;
+                    };
+
+                    if (scan.nextLine() == "this.flightDate" && scan.findInLine("=") == null){
+                        return false;
+                    };
+                    
+                }
+                
+                scan.close();
+            }
+            
+        } 
+        catch (FileNotFoundException e) {
+            System.out.print("File Not Found");
+        }
+
+        return true;
     }
 
     public boolean testCheckInLuggage(){
