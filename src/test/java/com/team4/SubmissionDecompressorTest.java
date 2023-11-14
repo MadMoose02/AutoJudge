@@ -4,7 +4,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.LinkedList;
 import java.util.TreeMap;
 
 public class SubmissionDecompressorTest {
@@ -15,24 +14,40 @@ public class SubmissionDecompressorTest {
         // String osName = System.getProperty("os.name").toLowerCase();
         // String path = System.getProperty("user.dir");
         // path += (osName.contains("windows")) ? "\\src\\test\\resources\\" : "/src/test/resources/";
-        String path = "C:\\Users\\kesha\\OneDrive\\Desktop\\";
+        String path = "C:\\Users\\kesha\\OneDrive\\Desktop";
         this.resourcesPath = path;
     }
     
     @Test
-    public void testFolderExtraction() {
-        System.out.println("Testing File Extraction...");
+    public void testExtractSubmissionFolder() {
+        System.out.println("\nTesting Submissions folder extraction...");
 
         this.setResourcesPath();
-        String zipFilename = "Submissions - Copy.zip";
-        SubmissionDecompressor sd = new SubmissionDecompressor();
-        TreeMap<String, File> tm = new TreeMap<>();
+        String zipFilename = "Submissions.zip";
+        SubmissionDecompressor sd = new SubmissionDecompressor(this.resourcesPath + File.separator + zipFilename);
+        TreeMap<String, File> submissions = new TreeMap<>();
+        try { submissions = sd.decompress(); } catch (Exception e) { e.printStackTrace(); }
+        System.out.println("\nExtracted " + submissions.size() + " submissions.");
+        assertEquals(3, submissions.size(), 0);
+    }
 
-        try {
-            sd.decompress(new String(this.resourcesPath + zipFilename), "", tm);
-        } catch (Exception e) { e.printStackTrace(); }
+    @Test
+    public void testExtractSingleSubmission() {
+        System.out.println("\nTesting single submission extraction...");
 
-        System.out.println("\nExtracted " + tm.size() + " submissions.");
-        assertEquals(3, tm.size(), 0);
+        this.setResourcesPath();
+        String zipFilename = "Submissions.zip";
+        SubmissionDecompressor sd = new SubmissionDecompressor(this.resourcesPath + File.separator + zipFilename);
+        TreeMap<String, File> submissions = new TreeMap<>();
+        try { submissions = sd.decompress(); } catch (Exception e) { e.printStackTrace(); }
+
+        // Use first submission for test case
+        String submissionName = submissions.firstKey();
+        String submissionPath = submissions.get(submissionName).getAbsolutePath();
+        sd = new SubmissionDecompressor(submissionPath);
+        TreeMap<String, File> submission = new TreeMap<>();
+        try { submission = sd.decompress(); } catch (Exception e) { e.printStackTrace(); }
+        
+        System.out.println("\nExtracted " + submission.size() + " files from " + submissionName);
     }
 }

@@ -1,5 +1,6 @@
 package com.team4;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,62 +13,94 @@ public class SubmissionDecompressor {
 
     // Attributes
     private static final int BUFFER_SIZE = 4096;
-    private String resourcesPath;
+    private static final int MAX_FILES = 30;
+    private static final String OS_ARCH = System.getProperty("os.name").toLowerCase();
+    private TreeMap<String, File> extractedFiles = new TreeMap<>();
+    private String compressedFilePath;
+    private String decompressedFilePath;
 
 
-    // /**
-    // * Default constructor - two arguments
-    // * @param resourcesPath Absolute path to the resources directory
-    // * @param compressedFilePath Absolute path to the compressed file
-    // */
-    // public SubmissionDecompressor(String resourcesPath, String compressedFilename) {
-    //     this.resourcesPath = resourcesPath + ((resourcesPath.endsWith(File.separator)) ? "" : File.separator);
-    //     this.compressedFilePath = this.resourcesPath + compressedFilename;
-    //     this.decompressedFilePath = this.resourcesPath + compressedFilename.split(".zip")[0];
-    // }
+    /**
+    * Default constructor - one argument
+    *  @param compressedFilePath Absolute path to the compressed file
+    */
+    public SubmissionDecompressor(String compressedFilePath) {
+        this.compressedFilePath = compressedFilePath;
+    }
 
-    // /**
-    // * Overload constructor - three arguments
-    // * @param resourcesPath Absolute path to the resources directory
-    // * @param compressedFilePath Absolute path to the compressed file
-    // * @param decompressedFilePath Absolute path to the decompressed file
-    // */
-    // public SubmissionDecompressor(String resourcesPath, 
-    //                         String compressedFilename, 
-    //                         String decompressedFilename) {
-    //     this.resourcesPath = resourcesPath + ((resourcesPath.endsWith(File.separator)) ? "" : File.separator);
-    //     this.compressedFilePath = this.resourcesPath + compressedFilename;
-    //     this.decompressedFilePath = this.resourcesPath + decompressedFilename;
-    // }
+    /**
+    * Overload constructor - two arguments
+    * @param compressedFilePath Absolute path to the compressed file
+    * @param decompressedFilePath Absolute path to the location to extract files to
+    */
+    public SubmissionDecompressor(String compressedFilePath, String decompressedFilePath) {
+        this.compressedFilePath = compressedFilePath;
+        this.decompressedFilePath = decompressedFilePath;
+    }
 
 
     // Methods
-
-    public void decompress(String filePath, String parentPath, TreeMap<String, File> tm) throws Exception {
-        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(filePath))) {
-            ZipEntry entry;
-            while ((entry = zipInputStream.getNextEntry()) != null) {
-                if (!entry.isDirectory()) {
-                    String name = entry.getName().split("/")[1];
-                    String fullPath = parentPath + File.separator + name;
-                    File extractedFile = new File(fullPath);
-                    FileOutputStream fileOutputStream = new FileOutputStream(extractedFile);
-                    byte[] buffer = new byte[BUFFER_SIZE];
-                    int length;
-                    while ((length = zipInputStream.read(buffer)) > 0) {
-                        fileOutputStream.write(buffer, 0, length);
-                    }
-                    fileOutputStream.close();
-                    if (name.endsWith(".java")) tm.put(fullPath, extractedFile);
-                    if (name.toLowerCase().endsWith(".zip")) {
-                        decompress(fullPath, extractedFile.getParent(), tm);
-                    }
-                }
-                zipInputStream.closeEntry();
-            }
-        } catch (IOException e) { 
-            throw new Exception("Error decompressing file: " + filePath);
+    
+    private static String getOSCompliantPath(String directoryPath) {
+        if (OS_ARCH.contains("windows")) {
+            return directoryPath.replace('/', '\\');
         }
-        return;
+        return directoryPath.replace('\\', '/');
+    }
+
+    
+    private static void extractFile(ZipInputStream zipInputStream, String filePath) throws IOException {
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int bytesRead;
+
+            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+        }
+    }
+
+
+    public TreeMap<String, File> decompress() throws IOException {
+        int numIterations = 0;
+
+        // Create the destination directory if it doesn't exist
+        FileInputStream fin = new FileInputStream(this.compressedFilePath);
+        String zipFileName = this.compressedFilePath.substring(
+            this.compressedFilePath.lastIndexOf(File.separator) + 1, 
+            this.compressedFilePath.length() - 4
+        );
+        File expandedDir = new File(this.decompressedFilePath + File.separator + zipFileName);
+        if (!expandedDir.exists()) expandedDir.mkdirs();
+        System.out.println("Extracting to: " + expandedDir.getAbsolutePath() + "\n");
+
+        try (ZipInputStream zipInputStream = new ZipInputStream(fin)) {
+
+            // Get the zipped file list entry
+            ZipEntry entry = zipInputStream.getNextEntry();
+
+            // Loop through the zipped file list
+            while (entry != null) {
+                if (numIterations++ > MAX_FILES) {
+                    throw new IOException("Too many files in zip file");
+                }
+                String entryName = getOSCompliantPath(entry.getName());
+                String filePath = this.decompressedFilePath + File.separator + entryName;
+
+                if (!entry.isDirectory()) {
+                    extractFile(zipInputStream, filePath);
+                } else {
+                    File dir = new File(filePath);
+                    dir.mkdirs();
+                }
+                
+                zipInputStream.closeEntry();
+                this.extractedFiles.put(filePath, new File(filePath));
+                entry = zipInputStream.getNextEntry();
+            }
+        }
+        fin.close();
+
+        return this.extractedFiles;
     }
 }

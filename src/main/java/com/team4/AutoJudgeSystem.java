@@ -11,7 +11,7 @@ public class AutoJudgeSystem implements AutoJudge {
     // Attributes
     private String resourcesPath;
     private String zippedSubmissionsFilename;
-    private TreeMap<Integer, HashMap<String, File>> submissions;
+    private HashMap<String, TreeMap<String, File>> submissions;
     private Evaluator evaluator;
     private SubmissionDecompressor submissionDecompressor;
     private double overallScore;
@@ -24,8 +24,10 @@ public class AutoJudgeSystem implements AutoJudge {
     public AutoJudgeSystem(String zippedSubmissionsFilename) {
         this.setResourcesPath();
         this.zippedSubmissionsFilename = zippedSubmissionsFilename;
-        this.submissionDecompressor = new SubmissionDecompressor();
-        this.submissions = new TreeMap<>();
+        this.submissionDecompressor = new SubmissionDecompressor(
+            this.resourcesPath + File.separator + this.zippedSubmissionsFilename
+        );
+        this.submissions = new HashMap<>();
         this.evaluator = new Evaluator();
         this.overallScore = 0.0;
     }
@@ -39,8 +41,10 @@ public class AutoJudgeSystem implements AutoJudge {
     public AutoJudgeSystem(String resourcesPath, String zippedSubmissionsFilename) {
         this.setResourcesPath(resourcesPath);
         this.zippedSubmissionsFilename = zippedSubmissionsFilename;
-        this.submissionDecompressor = new SubmissionDecompressor();
-        this.submissions = new TreeMap<>();
+        this.submissionDecompressor = new SubmissionDecompressor(
+            this.resourcesPath + File.separator + this.zippedSubmissionsFilename
+        );
+        this.submissions = new HashMap<>();
         this.evaluator = new Evaluator();
         this.overallScore = 0.0;
     }
@@ -52,7 +56,7 @@ public class AutoJudgeSystem implements AutoJudge {
         return this.resourcesPath;
     }
 
-    public TreeMap<Integer, HashMap<String, File>> getSubmissions() {
+    public HashMap<String, TreeMap<String, File>> getSubmissions() {
         return this.submissions;
     }
 
