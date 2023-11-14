@@ -4,12 +4,25 @@ import java.util.ArrayList;
 
 public class TestCollection implements AbstractTestCollection {
 
+    // Attributes
     private ArrayList<AbstractTestCase> testCases;
-    private int index;
 
+    /**
+     * Default constructor
+     */
     public TestCollection() {
         this.testCases = new ArrayList<>();
-        this.index = 0;
+    }
+
+    
+    // Methods
+
+    public int size() {
+        return this.testCases.size();
+    }
+
+    public AbstractTestCase get(int index) {
+        return this.testCases.get(index);
     }
 
     public void addTestCase(AbstractTestCase testCase) {
@@ -20,7 +33,7 @@ public class TestCollection implements AbstractTestCollection {
         this.testCases.remove(testCase);
     }
 
-    public AbstractTestCase next() {
-        return (index < this.testCases.size()) ? this.testCases.get(index++) : null;
+    public AbstractTestCollectionIterator getIterator() {
+        return new TestCollectionIterator(this);
     }
 }

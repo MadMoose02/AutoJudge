@@ -6,12 +6,19 @@ import java.util.List;
 
 public abstract class TestCase implements AbstractTestCase {
 
+    // Attributes
     protected final static int MAX_LINES = 200; 
     protected String testName;
     protected File testFile;
     protected ArrayList<String> parameters;
     protected ArrayList<String> feedbackComments;
 
+    /**
+     * Default constructor
+     * @param testName The name of the test case
+     * @param testFile The file to test
+     * @param parameters The parameters to pass to the test case
+     */
     public TestCase(String testName, File testFile, String[] parameters) {
         this.testName = testName;
         this.testFile = testFile;
