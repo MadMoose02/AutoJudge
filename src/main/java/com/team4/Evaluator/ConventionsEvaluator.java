@@ -27,6 +27,10 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     // we pull from file opened and store in attributes 
 
 
+
+    
+
+
     //make a function combining syntax and camel case together 
     private boolean isCamelCase(String Name  ){
 
@@ -65,36 +69,58 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+    private boolean validAccessModifier ( String AccessModifier){
+
+
+        if(AccessModifier.equals("private")||AccessModifier.equals("public")||AccessModifier.equals("protected")){
+            return true ; 
+        }
+
+        return false ; 
+
+    }
+
+    private boolean valid3wordAttributeDeclaration ( String AttributeLine[] ){
+
+        if ( validAccessModifier(AttributeLine[0]) && validDataTypes(AttributeLine[1]) && isCamelCase(AttributeLine[2])) {
+
+            return true ; 
+        }
+
+        return false ; 
+
+    }
+
+    private boolean valid4WordAttributeDeclaration ( String AttributeLine[] ){
+
+        if (validAccessModifier(AttributeLine[0]) && AttributeLine[1].equals("static") && validDataTypes(AttributeLine[2]) && isCamelCase(AttributeLine[3])) {
+
+            return true ; 
+        }
+
+        return false ; 
+
+
+    }
+
 
     //take in line , or // take in parameters 
     private boolean AttributeSyntaxCheck ( String AttributeLine ){ 
 
-        String[] AccessModifier = AttributeLine.split(" "); 
+        String[] attributeDeclaration = AttributeLine.split(" "); 
 
-        if( AccessModifier.length < 1){
+        if( attributeDeclaration.length < 1){
             return false ; 
         }
 
-        else if ( AccessModifier.length <= 2 ){
+        else if ( attributeDeclaration.length <= 2 ){
 
-        if ((AccessModifier[0].equals("private")||AccessModifier[0].equals("public")||AccessModifier[0].equals("protected")
-        && validDataTypes(AccessModifier[1])) && isCamelCase(AccessModifier[2])) {
-
-            return true ; 
-        }
-
-        return false ; 
+            return valid3wordAttributeDeclaration(attributeDeclaration); 
 
         }
-        else if( AccessModifier.length > 2 && AccessModifier.length<=3 ){
+        else if( attributeDeclaration.length > 2 && attributeDeclaration.length<=3 ){
 
-        if ((AccessModifier[0].equals("private")||AccessModifier[0].equals("public")||AccessModifier[0].equals("protected")
-        && AccessModifier[1].equals("static") && validDataTypes(AccessModifier[2])) && isCamelCase(AccessModifier[3])) {
-
-            return true ; 
-        }
-
-        return false ; 
+            return valid4WordAttributeDeclaration(attributeDeclaration);
 
         }
 
@@ -149,44 +175,65 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     // !how do we know when the attribtues are done then move to constructor 
 
+
+    private boolean valid3wordClassLabel ( String [] classLabelLine , String filename ){
+
+    if( validAccessModifier(classLabelLine[0]) && classLabelLine[1].equals("class") && classLabelLine[2].equals(filename)){
+
+        return true ; 
+    }
+             
+    return false ; 
+
+    }
+
+    private boolean valid4wordClassLabel (String [] classLabelLine , String filename){
+
+         if( validAccessModifier(classLabelLine[0]) && (classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class")
+         && classLabelLine[3].equals(filename)){
+
+                return true ; 
+        }
+
+             return false ; 
+
+    }
+
+    private boolean valid6wordClassLabel (String [] classLabelLine , String filename){
+
+
+        if(validAccessModifier(classLabelLine[0]) &&(classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class") && 
+            classLabelLine[3].equals(filename) &&(classLabelLine[4].equals("implements") || (classLabelLine[4].equals("extends")))){
+                //implement a class checker 
+                return true ; 
+             }
+
+             return false ; 
+
+    }
+
+
     private boolean checkClassLabel ( String ClassName , String filename  ){
        
         String classLabelLine[] = ClassName.split(" "); 
 
         if (classLabelLine.length == 3 ){
         
-            if( ( classLabelLine[0].equals("private") || classLabelLine[0].equals("public") || classLabelLine[0].equals("protected") ) &&
-             classLabelLine[1].equals("class") && classLabelLine[2].equals(filename)){
-
-                return true ; 
-             }
-             
-             return false ; 
+            return valid3wordClassLabel(classLabelLine , filename) ; 
             
-            //classLabelLine[3].equals(filename) ; 
+        
         }
 
         else if ( classLabelLine .length == 4){
 
-            if( ( classLabelLine[0].equals("private") || classLabelLine[0].equals("public") || classLabelLine[0].equals("protected") ) &&
-             (classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class")){
-
-                return true ; 
-             }
-             return false ; 
+            return valid4wordClassLabel(classLabelLine, filename) ; 
+           
 
         }
 
         else if ( classLabelLine .length == 6){
 
-            if( ( classLabelLine[0].equals("private") || classLabelLine[0].equals("public") || classLabelLine[0].equals("protected") ) &&
-             (classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class") && 
-             (classLabelLine[3].equals("implements") || (classLabelLine[3].equals("extends")))){
-                //implement a class checker 
-                return true ; 
-             }
-
-             return false ; 
+            return valid6wordClassLabel(classLabelLine, filename); 
 
         }
 
@@ -198,12 +245,24 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
-    //private constructorBuil
+    private boolean detectConstructor ( File javaDocument , String line){
+
+        String fileName = javaDocument.getName() ; 
+
+        if(line.contains(fileName) && line.contains("(") && line.contains(")")){
+            return true ; 
+        }
+
+        return false ; 
+
+
+    }
 
 
 
+    /* 
 
-    private boolean evaluateAttributes ( File javaDocument){
+    private boolean evaluateAttributes ( File javaDocument ){
 
         String Filename = javaDocument.getName() ; 
        
@@ -214,9 +273,9 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             while(sc.hasNextLine()){
 
 
-                String line = sc.nextLine() ; 
+                //String line = sc.nextLine() ; 
 
-                if(line.equals())
+                //if(line.equals())
 
 
 
@@ -235,7 +294,8 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false ; 
     }
 
-
+    */
+   
     
  
 //read line until consturctor , to run the attribute checks 
@@ -244,7 +304,8 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 //after constructor then eval methods 
 // after return that is when we can start
 
-
+//! Once line is processed , we generate a result on that 
+//! if it didnt pass then
     @Override
     public double evaluate(File javaDocument) {
         String Filename = javaDocument.getName() ; 
@@ -252,9 +313,21 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         try {
 
             Scanner sc = new Scanner(javaDocument); 
-            
+
+            String line = sc.nextLine() ; 
+
+            if (line == null)
+                return 0.00 ; 
+
             while(sc.hasNextLine()){
-                String line = sc.nextLine() ; 
+
+                if(!detectConstructor(javaDocument, line)){
+                   boolean tf =  AttributeSyntaxCheck(line); 
+                }
+
+
+
+                
 
                 //if(line)
 
@@ -264,7 +337,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             
             
             
-       sc.close() ;
+            sc.close() ;
         }
         
         catch(Exception e){
