@@ -13,23 +13,21 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
     }
 
     //associationClass - eg. Flight/Passenger/LuggageSlip
-    private int checksAssociation (File javaFile, String associationClass){
+    private double checksAssociation (File javaFile, String associationClass){
         try (Scanner scan = new Scanner(javaFile)) {
             while (scan.hasNext()) {
                 String line = scan.nextLine();
                 
                 if (line.contains(associationClass)){
-                    return 1;
+                    return 1.0;
                 }
-            }
-            scan.close();
-            return 0;    
+            } 
         }
 
         catch (FileNotFoundException e) {
             System.out.print("File Not Found");
         }
-        return 0;
+        return 0.0;
     }
 
 
