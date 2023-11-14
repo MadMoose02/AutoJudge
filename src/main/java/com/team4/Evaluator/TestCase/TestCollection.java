@@ -21,6 +21,6 @@ public class TestCollection implements AbstractTestCollection {
     }
 
     public AbstractTestCase next() {
-        return this.testCases.get(this.index++);
+        return (index < this.testCases.size()) ? this.testCases.get(index++) : null;
     }
 }
