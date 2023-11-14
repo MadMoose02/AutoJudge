@@ -48,6 +48,60 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+    private boolean validDataTypes ( String dataType){
+
+        if(dataType.equals("int")||dataType.equals("String")||dataType.equals("boolean")||
+        dataType.equals("ArrayList<LuggageSlip>") || dataType.equals("Passenger")||dataType.equals("Flight")||
+        dataType.equals("LuggageSlip")){
+
+            return true ; 
+        }
+
+        return false ; 
+
+
+
+    }
+
+
+    //take in line , or // take in parameters 
+    private boolean AttributeSyntaxCheck ( String AttributeLine ){ // check static 
+
+        String[] AccessModifier = AttributeLine.split(" "); 
+
+     
+
+        if ( AccessModifier.length <= 2 ){
+
+        if ((AccessModifier[0].equals("private")||AccessModifier[0].equals("public")||AccessModifier[0].equals("protected")
+        && validDataTypes(AccessModifier[1])) && isCamelCase(AccessModifier[2])) {
+
+            return true ; 
+        }
+
+        return false ; 
+
+        }
+        else if( AccessModifier.length > 2 && AccessModifier.length<=3 ){
+
+        if ((AccessModifier[0].equals("private")||AccessModifier[0].equals("public")||AccessModifier[0].equals("protected")
+        && AccessModifier[1].equals("static") && validDataTypes(AccessModifier[2])) && isCamelCase(AccessModifier[3])) {
+
+            return true ; 
+        }
+
+        return false ; 
+
+        }
+
+
+
+        
+
+
+
+    }
+
 
     public ConventionsEvaluator() {
         this.score = 0.0;
