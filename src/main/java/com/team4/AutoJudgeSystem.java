@@ -12,6 +12,7 @@ public class AutoJudgeSystem implements AutoJudge {
     private String resourcesPath;
     private String zippedSubmissionsFilename;
     private HashMap<String, TreeMap<String, File>> submissions;
+    private HashMap<String, TreeMap<String, String>> submissionFeedback;
     private Evaluator evaluator;
     private SubmissionDecompressor submissionDecompressor;
     private double overallScore;
@@ -28,7 +29,6 @@ public class AutoJudgeSystem implements AutoJudge {
             this.resourcesPath + File.separator + this.zippedSubmissionsFilename
         );
         this.submissions = new HashMap<>();
-        this.evaluator = new Evaluator();
         this.overallScore = 0.0;
     }
 
@@ -45,7 +45,6 @@ public class AutoJudgeSystem implements AutoJudge {
             this.resourcesPath + File.separator + this.zippedSubmissionsFilename
         );
         this.submissions = new HashMap<>();
-        this.evaluator = new Evaluator();
         this.overallScore = 0.0;
     }
 
@@ -113,6 +112,7 @@ public class AutoJudgeSystem implements AutoJudge {
                 System.exit(1);
             }
         }
+
         System.out.println("Number of submissions: " + this.submissions.size());
     }
 
@@ -140,6 +140,7 @@ public class AutoJudgeSystem implements AutoJudge {
             
             // Run evaluation on each submission file
             for (String submissionFilename : submission.keySet()) {
+                this.evaluator = new Evaluator();
                 if (!submissionFilename.endsWith(".java")) continue;
                 File submissionFile = submission.get(submissionFilename);
                 System.out.println("Evaluating file: " + submissionFilename);
