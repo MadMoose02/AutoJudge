@@ -117,16 +117,25 @@ public class ConstructorBehaviourEvaluator extends TestCase {
 
     
     private boolean checkConstructorParameters() {
-        String methodParams = methodBody.substring(methodBody.indexOf("(") + 1, methodBody.indexOf(")"));
+        String methodParams = this.methodBody.substring(this.methodBody.indexOf("(") + 1, methodBody.indexOf(")"));
         String[] rawParamsList = methodParams.split(",");
         this.evalParameters = new ArrayList<>();
         for (String each : rawParamsList) this.evalParameters.add(each.trim());
+        
+        // If no parameters are expected, check if constructor has no parameters
+        if ((this.parameters.size() == 0) && (this.evalParameters.size() != 0)) {
+            this.failureMsg = "\n  Expected no parameters, but found: ";
+            for (String each : this.evalParameters) this.failureMsg += each + "; ";
+        }
+
+        // Check for expected parameters
         if (!this.evalParameters.containsAll(this.parameters)) {
             this.failureMsg = "\n  Missing parameters: ";
             for (String each : this.parameters) {
                 if (!this.evalParameters.contains(each)) this.failureMsg += each + "; ";
             }
         }
+
         return this.evalParameters.containsAll(this.parameters);
     }
 
