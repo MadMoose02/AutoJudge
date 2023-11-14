@@ -135,8 +135,8 @@ public class AutoJudgeSystem implements AutoJudge {
         
         // Run evaluation on submissions using Evaluator
         for (String submissionName : this.submissions.keySet()) {
-            System.out.println("\nEvaluating submission: " + submissionName + "(" + this.submissions.get(submissionName).size() + " files)");
             TreeMap<String, File> submission = this.submissions.get(submissionName);
+            System.out.println("\nEvaluating submission: " + submissionName + " (" + submission.size() + " files)");
             
             // Run evaluation on each submission file
             for (String submissionFilename : submission.keySet()) {
