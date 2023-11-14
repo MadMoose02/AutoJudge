@@ -32,13 +32,13 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         return false;
     }
 
-    private void toString (File javaDocument, String associationClass1, String associationClass2){
+    private int numTestCasesPassed (File javaDocument, String associationClass1, String associationClass2){
         if (checksAssociation(javaDocument, associationClass2)){
-            System.out.println("There exists an association between the " + associationClass1 + " and " + associationClass2 + " classes");
+            return 1;
         }
 
         else{
-             System.out.println("No association found between the " + associationClass1 + " and " + associationClass2 + " classes");
+            return 0;
         }
     }
 
@@ -47,12 +47,12 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         String filename = javaDocument.getName();
 
         if (filename == "LuggageManagementSystem"){
-            toString(javaDocument, filename, "Flight");
-            toString(javaDocument, filename, "Passenger");
+            this.score += numTestCasesPassed(javaDocument, filename, "Flight");
+            this.score += numTestCasesPassed(javaDocument, filename, "Passenger");
         }
 
         if (filename == "LuggageManifest"){
-            toString(javaDocument, filename, "LuggageSlip");
+            this.score += numTestCasesPassed(javaDocument, filename, "LuggageSlip");
         }
         return this.score;
     }
