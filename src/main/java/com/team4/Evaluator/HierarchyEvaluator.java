@@ -13,46 +13,37 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
     }
 
     //associationClass - eg. Flight/Passenger/LuggageSlip
-    private boolean checksAssociation (File javaFile, String associationClass){
+    private int checksAssociation (File javaFile, String associationClass){
         try (Scanner scan = new Scanner(javaFile)) {
             while (scan.hasNext()) {
                 String line = scan.nextLine();
                 
                 if (line.contains(associationClass)){
-                    return true;
+                    return 1;
                 }
             }
             scan.close();
-            return false;    
+            return 0;    
         }
 
         catch (FileNotFoundException e) {
             System.out.print("File Not Found");
         }
-        return false;
+        return 0;
     }
 
-    private int numTestCasesPassed (File javaDocument, String associationClass1, String associationClass2){
-        if (checksAssociation(javaDocument, associationClass2)){
-            return 1;
-        }
-
-        else{
-            return 0;
-        }
-    }
 
     @Override
     public double evaluate(File javaDocument) {
         String filename = javaDocument.getName();
 
         if (filename == "LuggageManagementSystem"){
-            this.score += numTestCasesPassed(javaDocument, filename, "Flight");
-            this.score += numTestCasesPassed(javaDocument, filename, "Passenger");
+            this.score += checksAssociation(javaDocument, "Flight");
+            this.score += checksAssociation(javaDocument, "Passenger");
         }
 
         if (filename == "LuggageManifest"){
-            this.score += numTestCasesPassed(javaDocument, filename, "LuggageSlip");
+            this.score += checksAssociation(javaDocument, "LuggageSlip");
         }
         return this.score;
     }
