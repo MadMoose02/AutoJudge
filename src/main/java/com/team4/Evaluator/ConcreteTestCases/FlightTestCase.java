@@ -15,32 +15,29 @@ public class FlightTestCase extends TestCase {
     }
 
     public boolean testConstructor(){
-        try {
-            try (Scanner scan = new Scanner(testFile)) {
-                while (scan.hasNext()) {
-                    
-                    if (scan.next() == "this.flightNo." && scan.findInLine("=") == null){
-                        return false;
-                    };
+        try (Scanner scan = new Scanner(testFile)) {
+            while (scan.hasNext()) {
 
-                    if (scan.nextLine() == "this.destination" && scan.findInLine("=") == null){
-                        return false;
-                    };
-
-                    if (scan.nextLine() == "this.origin" && scan.findInLine("=") == null){
-                        return false;
-                    };
-
-                    if (scan.nextLine() == "this.flightDate" && scan.findInLine("=") == null){
-                        return false;
-                    };
-                    
-                }
+                String line = scan.nextLine();
                 
-                scan.close();
+                if (line.contains("this.flightNo") && line.contains("=")){
+                    return false;
+                };
+
+                if (line.contains("this.destination") && line.contains("=")){
+                    return false;
+                };
+
+                if (line.contains("this.origin") && line.contains("=")){
+                    return false;
+                };
+
+                if (line.contains("this.flightDate") && line.contains("=")){
+                    return false;
+                };
+                
             }
-            
-        } 
+        }
         catch (FileNotFoundException e) {
             System.out.print("File Not Found");
         }
