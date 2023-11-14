@@ -149,15 +149,105 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     // !how do we know when the attribtues are done then move to constructor 
 
+    private boolean checkClassLabel ( String ClassName , String filename  ){
+       
+        String classLabelLine[] = ClassName.split(" "); 
+
+        if (classLabelLine.length == 3 ){
+        
+            if( ( classLabelLine[0].equals("private") || classLabelLine[0].equals("public") || classLabelLine[0].equals("protected") ) &&
+             classLabelLine[1].equals("class") && classLabelLine[2].equals(filename)){
+
+                return true ; 
+             }
+             
+             return false ; 
+            
+            //classLabelLine[3].equals(filename) ; 
+        }
+
+        else if ( classLabelLine .length == 4){
+
+            if( ( classLabelLine[0].equals("private") || classLabelLine[0].equals("public") || classLabelLine[0].equals("protected") ) &&
+             (classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class")){
+
+                return true ; 
+             }
+             return false ; 
+
+        }
+
+        else if ( classLabelLine .length == 6){
+
+            if( ( classLabelLine[0].equals("private") || classLabelLine[0].equals("public") || classLabelLine[0].equals("protected") ) &&
+             (classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class") && 
+             (classLabelLine[3].equals("implements") || (classLabelLine[3].equals("extends")))){
+                //implement a class checker 
+                return true ; 
+             }
+
+             return false ; 
+
+        }
+
+        else 
+        return false; 
+
+
+
+
+    }
+
+    //private constructorBuil
+
+
+
+
+    private boolean evaluateAttributes ( File javaDocument){
+
+        String Filename = javaDocument.getName() ; 
+       
+        try {
+
+            Scanner sc = new Scanner(javaDocument); 
+            
+            while(sc.hasNextLine()){
+
+
+                String line = sc.nextLine() ; 
+
+                if(line.equals())
+
+
+
+            }
+            
+            
+            
+       sc.close() ;
+        }
+        
+        catch(Exception e){
+            System.out.println(" "+ e.getMessage() + " ") ;
+        }
+
+
+        return false ; 
+    }
 
 
     
+ 
+//read line until consturctor , to run the attribute checks 
+//eval the constructor , 
 
+//after constructor then eval methods 
+// after return that is when we can start
 
 
     @Override
     public double evaluate(File javaDocument) {
-
+        String Filename = javaDocument.getName() ; 
        
         try {
 
@@ -165,6 +255,8 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             
             while(sc.hasNextLine()){
                 String line = sc.nextLine() ; 
+
+                //if(line)
 
 
 
