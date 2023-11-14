@@ -1,6 +1,7 @@
 package com.team4.Evaluator.TestCase;
 
 public interface AbstractTestCase {
-    public boolean testCriteria();
-    public boolean runTest();
+    public String getFeedbackComments();
+    public boolean testCriteria() throws Exception;
+    public boolean runTest() throws Exception;
 }
