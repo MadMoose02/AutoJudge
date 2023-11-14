@@ -94,22 +94,59 @@ public class AutoJudgeSystem implements AutoJudge {
         System.out.println();
     }
 
+    private final void extractSubmissions() {
+        TreeMap<String, File> submissionsFolder = new TreeMap<>();
+        try { submissionsFolder = this.submissionDecompressor.decompress(); }
+        catch (Exception e) { 
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // Put submission entries into submissions HashMap
+        for (String submission : submissionsFolder.keySet()) {
+            this.submissionDecompressor = new SubmissionDecompressor(
+                this.resourcesPath + File.separator + submission
+            );
+            try { this.submissions.put(submission, this.submissionDecompressor.decompress()); }
+            catch (Exception e) { 
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+        System.out.println("Number of submissions: " + this.submissions.size());
+    }
+
+    private final void removeExtractedZipFiles() {
+        for (String submission : this.submissions.keySet()) {
+            File submissionFile = new File(this.resourcesPath + File.separator + submission);
+            submissionFile.delete();
+        }
+    }
 
     @Override
     public void evaluateSubmissions() {
-        displayLaunchMessage();
+        // displayLaunchMessage();
         System.out.println("<-- Submission Evaluation -->");
-        System.out.println("Unzipping submission files... (" + this.zippedSubmissionsFilename + ")");
+        System.out.println("Extracting submissions... (" + this.zippedSubmissionsFilename + ")");
 
-        // Safely decompress submissions, else hard exit
-        // try { this.submissions = this.submissionDecompressor.decompress(); }
-        // catch (Exception e) { 
-        //     e.printStackTrace();
-        //     System.exit(1);
-        // }
+        // Safely decompress submissions zip folder, else hard exit
+        this.extractSubmissions();
+        this.removeExtractedZipFiles();
         
         // Run evaluation on submissions using Evaluator
-        evaluator.evaluate(null);
+        for (String submissionName : this.submissions.keySet()) {
+            TreeMap<String, File> submission = this.submissions.get(submissionName);
+            System.out.println("\nEvaluating submission: " + submissionName + " (" + submission.size() + " files)");
+            
+            // Run evaluation on each submission file
+            for (String submissionFilename : submission.keySet()) {
+                if (!submissionFilename.endsWith(".java")) continue;
+                File submissionFile = submission.get(submissionFilename);
+                System.out.println("Evaluating file: " + submissionFilename);
+                double score = this.evaluator.evaluate(submissionFile);
+                this.overallScore += score;
+            }
+        }
         System.out.println("Evaluation complete.");
     }
 

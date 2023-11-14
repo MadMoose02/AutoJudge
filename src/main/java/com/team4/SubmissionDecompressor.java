@@ -26,6 +26,10 @@ public class SubmissionDecompressor {
     */
     public SubmissionDecompressor(String compressedFilePath) {
         this.compressedFilePath = compressedFilePath;
+        this.decompressedFilePath = compressedFilePath.substring(
+            0, 
+            compressedFilePath.lastIndexOf(File.separator)
+        );
     }
 
     /**
@@ -72,7 +76,6 @@ public class SubmissionDecompressor {
         );
         File expandedDir = new File(this.decompressedFilePath + File.separator + zipFileName);
         if (!expandedDir.exists()) expandedDir.mkdirs();
-        System.out.println("Extracting to: " + expandedDir.getAbsolutePath() + "\n");
 
         try (ZipInputStream zipInputStream = new ZipInputStream(fin)) {
 
@@ -95,7 +98,7 @@ public class SubmissionDecompressor {
                 }
                 
                 zipInputStream.closeEntry();
-                this.extractedFiles.put(filePath, new File(filePath));
+                this.extractedFiles.put(entryName, new File(filePath));
                 entry = zipInputStream.getNextEntry();
             }
         }
