@@ -131,7 +131,19 @@ public class AutoJudgeSystem implements AutoJudge {
         this.removeExtractedZipFiles();
         
         // Run evaluation on submissions using Evaluator
-        evaluator.evaluate(null);
+        for (String submissionName : this.submissions.keySet()) {
+            System.out.println("\nEvaluating submission: " + submissionName + "(" + this.submissions.get(submissionName).size() + " files)");
+            TreeMap<String, File> submission = this.submissions.get(submissionName);
+            
+            // Run evaluation on each submission file
+            for (String submissionFilename : submission.keySet()) {
+                if (!submissionFilename.endsWith(".java")) continue;
+                File submissionFile = submission.get(submissionFilename);
+                System.out.println("Evaluating file: " + submissionFilename);
+                double score = this.evaluator.evaluate(submissionFile);
+                this.overallScore += score;
+            }
+        }
         System.out.println("Evaluation complete.");
     }
 
