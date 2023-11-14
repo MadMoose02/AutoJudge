@@ -12,40 +12,48 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         this.score = 0.0;
     }
 
-    private boolean checksAssociation (File javaFile){
-        Boolean flightAssociation = false;
-        Boolean passengerAssociation = false;
-
-        try {
-            try (Scanner scan = new Scanner(javaFile)) {
-                while (scan.hasNext()) {
-                    if (scan.next() == "Flight" || scan.next() == "ArrayList<Flight>"){
-                        flightAssociation = true ;
-                    }
-
-                    if (scan.next() == "Passenger" || scan.next() == "ArrayList<Passenger>"){
-                        passengerAssociation = true;
-                    }
+    //associationClass - eg. Flight/Passenger/LuggageSlip
+    private boolean checksAssociation (File javaFile, String associationClass){
+        try (Scanner scan = new Scanner(javaFile)) {
+            while (scan.hasNext()) {
+                String line = scan.nextLine();
+                
+                if (line.contains(associationClass)){
+                    return true;
                 }
-                scan.close();
             }
-            if (flightAssociation == true && passengerAssociation == true){
-                return true;
-            }
-            else{
-                return false;
-            }
-            
-        } 
+            scan.close();
+            return false;    
+        }
+
         catch (FileNotFoundException e) {
             System.out.print("File Not Found");
         }
+        return false;
+    }
 
-        return true;
+    private void toString (File javaDocument, String associationClass1, String associationClass2){
+        if (checksAssociation(javaDocument, associationClass2)){
+            System.out.println("There exists an association between the " + associationClass1 + " and " + associationClass2 + " classes");
+        }
+
+        else{
+             System.out.println("No association found between the " + associationClass1 + " and " + associationClass2 + " classes");
+        }
     }
 
     @Override
     public double evaluate(File javaDocument) {
+        String filename = javaDocument.getName();
+
+        if (filename == "LuggageManagementSystem"){
+            toString(javaDocument, filename, "Flight");
+            toString(javaDocument, filename, "Passenger");
+        }
+
+        if (filename == "LuggageManifest"){
+            toString(javaDocument, filename, "LuggageSlip");
+        }
         return this.score;
     }
     
