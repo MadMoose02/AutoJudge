@@ -113,6 +113,13 @@ public class AutoJudgeSystem implements AutoJudge {
         System.out.println("Number of submissions: " + this.submissions.size());
     }
 
+    private final void removeExtractedZipFiles() {
+        for (String submission : this.submissions.keySet()) {
+            File submissionFile = new File(this.resourcesPath + File.separator + submission);
+            submissionFile.delete();
+        }
+    }
+
     @Override
     public void evaluateSubmissions() {
         displayLaunchMessage();
@@ -121,6 +128,7 @@ public class AutoJudgeSystem implements AutoJudge {
 
         // Safely decompress submissions zip folder, else hard exit
         this.extractSubmissions();
+        this.removeExtractedZipFiles();
         
         // Run evaluation on submissions using Evaluator
         evaluator.evaluate(null);
