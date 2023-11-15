@@ -5,4 +5,5 @@
 .vscode/
 target/
 src/test/resources/Submissions
+src/test/resources/TestReport.pdf
 src/main/resources/Submissions

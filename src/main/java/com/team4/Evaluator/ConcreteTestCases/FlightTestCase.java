@@ -10,8 +10,8 @@ public class FlightTestCase extends TestCase {
 
     // private LuggageManifestTestCase luggage;
 
-    public FlightTestCase(String testName, File testFile) {
-        super(testName, testFile);
+    public FlightTestCase(String testName, File testFile, String[] parameters) {
+        super(testName, testFile, parameters);
     }
 
     public boolean testConstructor(){
@@ -164,6 +164,12 @@ public class FlightTestCase extends TestCase {
             return true;
 
         return false;
+    }
+
+    @Override
+    public String getFeedbackComments() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFeedbackComments'");
     }
     
 }

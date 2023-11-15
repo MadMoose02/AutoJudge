@@ -6,8 +6,8 @@ import com.team4.Evaluator.TestCase.TestCase;
 
 public class LuggageSlipTestCase extends TestCase {
 
-    public LuggageSlipTestCase(String testName, File testFile) {
-        super(testName, testFile);
+    public LuggageSlipTestCase(String testName, File testFile, String[] parameters) {
+        super(testName, testFile, parameters);
     }
 
     public boolean testConstructor(){
@@ -36,6 +36,12 @@ public class LuggageSlipTestCase extends TestCase {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getFeedbackComments() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFeedbackComments'");
     }
     
 }
