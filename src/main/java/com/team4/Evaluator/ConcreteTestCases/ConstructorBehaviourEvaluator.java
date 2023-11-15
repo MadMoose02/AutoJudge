@@ -237,24 +237,26 @@ public class ConstructorBehaviourEvaluator extends TestCase {
         extractConstructorBody();
 
         // Sub test case 1: Check if constructor has correct parameters
-        if (!(status = this.checkConstructorParameters())) {
+        status = this.checkConstructorParameters();
+        this.feedbackCommentSB.append("\nParameter check: " + (status ? "Passed" : "Failed") + "\n");
+        if (!status) {
             this.feedbackCommentSB.append("\n- Constructor does not have correct parameters");
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
-        System.out.println("Parameter check: " + (status ? "Passed" : "Failed"));
         
         // Sub test case 2: Check if constructor assigns correct values to attributes
         ArrayList<String> expectedAttributes = (this.parameters != null) ? new ArrayList<>(this.parameters) : new ArrayList<>();
         if (this.instanceAttributes != null) expectedAttributes.addAll(this.instanceAttributes);
-        if (!(status = this.checkAttributeAssignment())) {
+        status = this.checkAttributeAssignment();
+        this.feedbackCommentSB.append("Assignment check: " + (status ? "Passed" : "Failed") + "\n");
+        if (!status) {
             this.feedbackCommentSB.append("\n- Constructor does not assign correct values to attributes.");
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
-        System.out.println("Assignment check: " + (status ? "Passed" : "Failed"));
 
         return (this.numTestsPassed == 2);
     }

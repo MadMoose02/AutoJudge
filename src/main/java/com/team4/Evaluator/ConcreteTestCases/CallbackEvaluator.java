@@ -72,8 +72,7 @@ public class CallbackEvaluator extends TestCase {
         extractMethodBody();
 
         if(!methodBody.contains(evalCallbackMethodName)){
-            this.feedbackComments.append("\n- Method does not have a call back method");
-            this.feedbackComments.append("\n");
+            this.feedbackComments.append("\n- Method does not call the required function: " + evalCallbackMethodName + "\n");
         }
 
         if (methodBody.contains(evalCallbackMethodName)) {

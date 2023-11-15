@@ -31,7 +31,7 @@ public abstract class TestCase implements AbstractTestCase {
 
     // Template method
     public final boolean runTest() throws Exception {
-        System.out.println("Running Test Case: " + this.testName);
+        System.out.println("* Running Test Case: " + this.testName);
         return this.testCriteria();
     }
 }

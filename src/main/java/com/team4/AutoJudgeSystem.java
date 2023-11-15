@@ -11,6 +11,7 @@ public class AutoJudgeSystem implements AutoJudge {
     // Attributes
     private String resourcesPath;
     private String zippedSubmissionsFilename;
+    private String reportDirectory;
     private HashMap<String, TreeMap<String, File>> submissions;
     private HashMap<String, TreeMap<String, String>> submissionFeedback;
     private Evaluator evaluator;
@@ -25,6 +26,7 @@ public class AutoJudgeSystem implements AutoJudge {
     public AutoJudgeSystem(String zippedSubmissionsFilename) {
         this.setResourcesPath();
         this.zippedSubmissionsFilename = zippedSubmissionsFilename;
+        this.reportDirectory = this.resourcesPath + zippedSubmissionsFilename.substring(0, zippedSubmissionsFilename.indexOf(".")) + "_reports";
         this.submissionDecompressor = new SubmissionDecompressor(
             this.resourcesPath + File.separator + this.zippedSubmissionsFilename
         );
@@ -113,7 +115,7 @@ public class AutoJudgeSystem implements AutoJudge {
             }
         }
 
-        System.out.println("Number of submissions: " + this.submissions.size());
+        System.out.println("Done. Found " + this.submissions.size() + " submissions\n");
     }
 
     private final void removeExtractedZipFiles() {
@@ -136,17 +138,19 @@ public class AutoJudgeSystem implements AutoJudge {
         // Run evaluation on submissions using Evaluator
         for (String submissionName : this.submissions.keySet()) {
             TreeMap<String, File> submission = this.submissions.get(submissionName);
-            System.out.println("\nEvaluating submission: " + submissionName + " (" + submission.size() + " files)");
+            System.out.println("=".repeat(80));
+            System.out.println(" Evaluating: " + submissionName + " (" + submission.size() + " files)");
+            System.out.println("=".repeat(80));
             
             // Run evaluation on each submission file
             for (String submissionFilename : submission.keySet()) {
                 this.evaluator = new Evaluator();
-                if (!submissionFilename.endsWith(".java")) continue;
                 File submissionFile = submission.get(submissionFilename);
-                System.out.println("Evaluating file: " + submissionFilename);
+                System.out.println("\n> Evaluating file: " + submissionFilename);
                 double score = this.evaluator.evaluate(submissionFile);
                 this.overallScore += score;
             }
+            System.out.println("=".repeat(80) + "\n");    
         }
         System.out.println("Evaluation complete.");
     }
@@ -154,16 +158,14 @@ public class AutoJudgeSystem implements AutoJudge {
 
     @Override
     public void generatePDFReport() {
-        System.out.println("Generating PDF report...");
-        System.out.print("Reports generated to ");
-        System.out.println(this.resourcesPath);
+        System.out.println("Generating PDF report" + (this.submissions.size() > 1 ? "s" : "") + " ...");
+        System.out.print("Reports generated to " + this.reportDirectory + File.separator);
     }
 
 
     @Override
     public void displayEvaluationResults() {
-        System.out.println("\n<--- Evaluation Breakdown --->");
+        System.out.println("\n\n<--- Evaluation Breakdown --->");
         System.out.println("Overall score: " + this.overallScore + "%");
-        System.out.println("\n\n<--- Test Breakdown --->");
     }
 }
