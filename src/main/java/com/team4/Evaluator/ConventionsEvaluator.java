@@ -76,6 +76,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             return true ; 
         }
 
+        
         return false ; 
 
     }
@@ -220,17 +221,13 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         if (classLabelLine.length == 3 ){
         
             return valid3wordClassLabel(classLabelLine , filename) ; 
-            
-        
         }
 
         else if ( classLabelLine .length == 4){
 
             return valid4wordClassLabel(classLabelLine, filename) ; 
            
-
         }
-
         else if ( classLabelLine .length == 6){
 
             return valid6wordClassLabel(classLabelLine, filename); 
@@ -239,23 +236,15 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
         else 
         return false; 
-
-
-
-
     }
 
     private boolean detectConstructor ( File javaDocument , String line){
 
         String fileName = javaDocument.getName() ; 
-
         if(line.contains(fileName) && line.contains("(") && line.contains(")")){
             return true ; 
         }
-
         return false ; 
-
-
     }
 
     //valid method declaration
@@ -271,52 +260,18 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
-//    private boolean validMethod ( String line  ){
-
-        
-
-
-
-   // }
-
-
-
-    /* 
-
-    private boolean evaluateAttributes ( File javaDocument ){
-
-        String Filename = javaDocument.getName() ; 
-       
-        try {
-
-            Scanner sc = new Scanner(javaDocument); 
-            
-            while(sc.hasNextLine()){
-
-
-                //String line = sc.nextLine() ; 
-
-                //if(line.equals())
-
-
-
-            }
-            
-            
-            
-       sc.close() ;
-        }
-        
-        catch(Exception e){
-            System.out.println(" "+ e.getMessage() + " ") ;
-        }
-
-
-        return false ; 
-    }
-
-    */
    
+    public double verifyConstructor (String fileName , String line  ){
+
+        if(line.contains(fileName) && line.contains("(") && line.contains(")")){
+            return 1.00 ; 
+        }
+
+        return 0.00 ; 
+
+
+
+    }
     
  
 //read line until consturctor , to run the attribute checks 
@@ -324,6 +279,8 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
 //after constructor then eval methods 
 // after return that is when we can start
+
+//assume constructor needs to be written
 
 //! Once line is processed , we generate a result on that 
 //! if it didnt pass then
