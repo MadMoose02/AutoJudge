@@ -120,12 +120,16 @@ public class ConstructorBehaviourEvaluator extends TestCase {
         String methodParams = this.methodBody.substring(this.methodBody.indexOf("(") + 1, methodBody.indexOf(")"));
         String[] rawParamsList = methodParams.split(",");
         this.evalParameters = new ArrayList<>();
-        for (String each : rawParamsList) this.evalParameters.add(each.trim());
+        for (String each : rawParamsList) 
+            if ((each.length() > 1) && (!each.equals(" "))) this.evalParameters.add(each.trim());
         
         // If no parameters are expected, check if constructor has no parameters
-        if ((this.parameters.size() == 0) && (this.evalParameters.size() != 0)) {
+        if ((this.parameters.isEmpty()) && (this.evalParameters.isEmpty())) return true;
+
+        if ((this.parameters.isEmpty()) && (!this.evalParameters.isEmpty())) {
             this.failureMsg = "\n  Expected no parameters, but found: ";
             for (String each : this.evalParameters) this.failureMsg += each + "; ";
+            return false;
         }
 
         // Check for expected parameters
@@ -162,6 +166,7 @@ public class ConstructorBehaviourEvaluator extends TestCase {
         for (String each : attributeAssignments) {
             String attrValue = each.substring(each.indexOf("=") + 1).trim();
 
+            if (this.parameters.isEmpty()) continue;
             for (String param: this.parameters) {
                 String paramName = param.split(" ")[1].trim();
                 if (attrValue.equals(paramName)) {
@@ -173,12 +178,22 @@ public class ConstructorBehaviourEvaluator extends TestCase {
         for (String each : checkedAttributes) attributeAssignments.remove(each);
         checkedAttributes.clear();
         
-        // For unchecked assignments, check for new instantiation
+        // For unchecked assignments
         for (String each : attributeAssignments) {
             String attrValue = each.substring(each.indexOf("=") + 1).trim();
+
+            // Skip final and random assignments
+            if (each.contains("final") || each.matches("rand")) {
+                checkedAttributes.add(each);
+                continue;
+            }
             
+            if (this.instanceAttributes == null) continue;
             for (String attr: this.instanceAttributes) {
                 String attrType = attr.split(" ")[0].trim();
+
+                // If attr has a Type<T> declaration
+                if (attrType.contains("<")) attrType = attrType.substring(0, attr.indexOf("<")).trim();
                 
                 if (attrValue.contains("new") && attrValue.contains(attrType)) {
                     checkedAttributes.add(each);
@@ -193,7 +208,7 @@ public class ConstructorBehaviourEvaluator extends TestCase {
                 }
 
                 if (attrType.equals("int") || attrType.equals("double") || attrType.equals("float")) {
-                    if (attrValue.matches("[0-9]+")) {
+                    if (attrValue.matches("[0-9]+") || attrValue.contains("rand")) {
                         checkedAttributes.add(each);
                         break;
                     }
@@ -223,25 +238,20 @@ public class ConstructorBehaviourEvaluator extends TestCase {
 
         // Sub test case 1: Check if constructor has correct parameters
         if (!(status = this.checkConstructorParameters())) {
-            this.feedbackCommentSB.append("\n - Constructor does not have correct parameters.\nExpected parameters:\n");
-            for (String each : this.parameters) {
-                this.feedbackCommentSB.append("\t" + each + "\n");
-            }
-            this.feedbackCommentSB.append("Actual parameters:\n");
-            for (String each : this.evalParameters) {
-                this.feedbackCommentSB.append("\t" + each + "\n");
-            }
+            this.feedbackCommentSB.append("\n- Constructor does not have correct parameters");
             this.feedbackCommentSB.append(this.failureMsg);
+            this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
         System.out.println("Parameter check: " + (status ? "Passed" : "Failed"));
         
         // Sub test case 2: Check if constructor assigns correct values to attributes
-        ArrayList<String> expectedAttributes = new ArrayList<>(this.parameters);
+        ArrayList<String> expectedAttributes = (this.parameters != null) ? new ArrayList<>(this.parameters) : new ArrayList<>();
         if (this.instanceAttributes != null) expectedAttributes.addAll(this.instanceAttributes);
         if (!(status = this.checkAttributeAssignment())) {
             this.feedbackCommentSB.append("\n- Constructor does not assign correct values to attributes.");
             this.feedbackCommentSB.append(this.failureMsg);
+            this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
         System.out.println("Assignment check: " + (status ? "Passed" : "Failed"));

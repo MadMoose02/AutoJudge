@@ -77,6 +77,7 @@ public class BehaviourEvaluator implements SyntaxEvaluator {
         // Evaluate the constructor behaviour
         if (!javaDocument.getName().contains("LuggageManagementSystem")) {
             this.setEvaluationConfig(javaDocument);
+            System.out.println();
             this.testCollection.addTestCase(
                 new ConstructorBehaviourEvaluator(
                     "Test " + javaDocument.getName() + " constructor behaviour",
@@ -94,7 +95,7 @@ public class BehaviourEvaluator implements SyntaxEvaluator {
             while (iter.hasNext()) {
                 AbstractTestCase testCase = iter.next();
                 this.score += (testCase.runTest()) ? 1.0 : 0.0;
-                System.out.println(testCase.getFeedbackComments());
+                System.out.println("Feedback: " + testCase.getFeedbackComments());
             }
         } catch (Exception e) {
             e.printStackTrace();

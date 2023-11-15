@@ -17,12 +17,12 @@ public abstract class TestCase implements AbstractTestCase {
      * Default constructor
      * @param testName The name of the test case
      * @param testFile The file to test
-     * @param parameters The parameters to pass to the test case
+     * @param parameters The parameters to pass the test case
      */
     public TestCase(String testName, File testFile, String[] parameters) {
         this.testName = testName;
         this.testFile = testFile;
-        this.parameters = parameters != null ? new ArrayList<>(List.of(parameters)) : null;
+        this.parameters = (parameters != null) ? new ArrayList<>(List.of(parameters)) : new ArrayList<>();
         this.feedbackComments = new ArrayList<>();
     }
 
