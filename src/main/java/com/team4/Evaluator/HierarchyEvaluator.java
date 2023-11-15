@@ -26,7 +26,7 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         if (filename.equals("LuggageManagementSystem")){
             this.testCollection.addTestCase(
                 new AssociationHierarchyEvaluator(
-                    "Association check for '" + javaDocument.getName() + "'", 
+                    "Test for association with 'Flight' in '" + filename + "'", 
                     javaDocument, 
                     new String[]{"Flight"}
                 )
@@ -34,7 +34,7 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
             
             this.testCollection.addTestCase(
                 new AssociationHierarchyEvaluator(
-                    "Association check for '" + javaDocument.getName() + "'", 
+                    "Test for association with 'Passenger' in '" + filename + "'", 
                     javaDocument, 
                     new String[]{"Passenger"}
                 )
@@ -44,7 +44,7 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         if (filename.equals("LuggageManifest")){
             this.testCollection.addTestCase(
                 new AssociationHierarchyEvaluator(
-                    "Association check for '" + javaDocument.getName() + "'", 
+                    "Test for association with 'LuggageSlip' in '" + filename + "'", 
                     javaDocument, 
                     new String[]{"LuggageSlip"}
                 )
