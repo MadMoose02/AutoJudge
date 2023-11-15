@@ -25,11 +25,21 @@ public class PDFGeneratorTest {
         PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
         contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
-        contentStream.beginText();
-        contentStream.showText("Hello World\n\n\nThis is a sample report generation");
-        contentStream.endText();
-        contentStream.close();
 
+        try {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(25, 725);
+            contentStream.showText("AutoJudge Sample Report");
+            contentStream.newLineAtOffset(0, -25);
+            contentStream.showText("This is a sample report generation");
+            contentStream.endText();
+            contentStream.close();
+        } catch (Exception e) {
+            System.out.println("Unable to write to PDF");
+            e.printStackTrace();
+        }
+
+        // Save the document
         doc.save(testFilePath);
         doc.close();
     }
