@@ -59,7 +59,7 @@ public class CallbackEvaluator extends TestCase {
             }
 
         } catch (Exception e) {
-            System.out.println("Unable to extract constructor body from file: " + this.testFile.getName()); 
+            System.out.println("Unable to extract method body from file: " + this.testFile.getName()); 
             e.printStackTrace(); 
         }
     }
