@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.Test;
 
 import com.team4.Evaluator.ConcreteTestCases.*;
-import com.team4.Evaluator.TestCase.AbstractTestCase;
+import com.team4.Evaluator.TestCase.*;
 
 public class ConstructorBehaviourEvaluatorTest {
 
@@ -37,7 +37,7 @@ public class ConstructorBehaviourEvaluatorTest {
             );
             
             try { status = testCase.runTest(); } catch (Exception e) { e.printStackTrace(); }
-            testCase.getFeedbackComments();
+            System.out.println(testCase.getFeedbackComments());
             assertTrue(status);
         }
         
