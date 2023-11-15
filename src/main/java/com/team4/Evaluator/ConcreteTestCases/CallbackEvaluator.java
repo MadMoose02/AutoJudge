@@ -68,19 +68,16 @@ public class CallbackEvaluator extends TestCase {
 
     @Override
     public boolean testCriteria() throws Exception {
-        boolean flag = false;
+        boolean status = false;
         extractMethodBody();
 
-        if(!methodBody.contains(evalCallbackMethodName)){
-            this.feedbackComments.append("\n- Method does not call the required function: " + evalCallbackMethodName + "\n");
-        }
+        status = methodBody.contains(evalCallbackMethodName);
+        this.feedbackComments.append("Method calls required function: " + ((status) ? "Passed" : "Failed") + "\n");
 
-        if (methodBody.contains(evalCallbackMethodName)) {
-            System.out.println("Call back Method check: " + (methodBody.contains(evalCallbackMethodName) ? "Passed" : "Failed"));
-            flag = true;
-        }
+        if(!status)
+            this.feedbackComments.append("\n- Method '" + this.evalMethodName + "' does not call the required function: " 
+                + evalCallbackMethodName + "\n");
 
-        return flag;
+        return status;
     }
-    
 }
