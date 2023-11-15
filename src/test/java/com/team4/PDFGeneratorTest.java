@@ -5,6 +5,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 
 public class PDFGeneratorTest {
@@ -23,7 +24,7 @@ public class PDFGeneratorTest {
 
         PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-        contentStream.setFont(PDType1Font.COURIER, 12);
+        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
         contentStream.beginText();
         contentStream.showText("Hello World");
         contentStream.endText();
