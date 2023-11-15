@@ -23,9 +23,9 @@ public class ReturnTypeEvaluatorTest {
         
         // Test case for constructor of Flight.java
         AbstractTestCase testCase = new ReturnTypeEvaluator(
-            "Test correct return type", 
+            "Test correct return type for toString method",
             testFile,
-            new String[] {"Flight"},
+            new String[] {"String"},
             "toString"
         );
             

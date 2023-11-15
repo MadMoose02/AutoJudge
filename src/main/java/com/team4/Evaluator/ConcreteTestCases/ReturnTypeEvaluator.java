@@ -7,7 +7,7 @@ import com.team4.Evaluator.TestCase.TestCase;
 
 public class ReturnTypeEvaluator extends TestCase {
 
-    private StringBuilder feedbackComments;
+    private StringBuilder feedbackCommentsSB;
     private String evalMethodSignature;
     private String evalMethodName;
     private String evalReturnType;
@@ -21,13 +21,16 @@ public class ReturnTypeEvaluator extends TestCase {
      */
     public ReturnTypeEvaluator(String testName, File testFile, String[] parameters, String evalMethodName) {
         super(testName, testFile, parameters);
-        this.feedbackComments = new StringBuilder();
+        this.feedbackCommentsSB = new StringBuilder();
         this.evalMethodName = evalMethodName;
     }
 
+
+    // Methods
+
     @Override
     public String getFeedbackComments() {
-        return this.feedbackComments.toString();
+        return this.feedbackCommentsSB.toString();
     }
 
     private boolean locateEvalMethod(){
@@ -35,15 +38,19 @@ public class ReturnTypeEvaluator extends TestCase {
 
         try (Scanner scan = new Scanner(testFile)) {
             while (scan.hasNextLine()) {
-                line = scan.nextLine();
-                if (!line.contains(this.evalMethodName)) continue;
+                line = scan.nextLine().trim();
+
+                // Too short, does not contain function name, does not contain opening parenthesis
+                if (line.length() < this.evalMethodName.length()) continue;
+                if (!line.contains(this.evalMethodName) || !line.contains("(")) continue;
+                
+                line = line.substring(0, line.indexOf("("));
                 if (line.contains(this.parameters.get(0)) && line.contains(this.evalMethodName)) {
-                    line = line.substring(0, line.indexOf(")") - 1);
-                    this.evalMethodSignature = line.trim();
+                    this.evalMethodSignature = line;
                     return true;
                 }
             }
-            this.feedbackComments.append("\n- Method '" + this.evalMethodName + "' not found in '" 
+            this.feedbackCommentsSB.append("\n- Method '" + this.evalMethodName + "' not found in '" 
                 + this.testFile.getName() + "'\n");
             
         } catch (Exception e) {
@@ -69,18 +76,15 @@ public class ReturnTypeEvaluator extends TestCase {
         if (!(status = locateEvalMethod())) {
             return status;
         }
-        System.out.println("Method signature: " + this.evalMethodSignature);
         
         locateEvalMethodReturnType();
-        System.out.println("Method return type: " + this.evalReturnType);
         
+        this.feedbackCommentsSB.append("Return Type check: " + ((status) ? "Passed" : "Failed") + "\n");
         if (!(status = this.parameters.get(0).equals(evalReturnType))) {
-            this.feedbackComments.append("\n- Method does not have correct return type\n");
-            this.feedbackComments.append("  Expected: " + this.parameters.get(0) + "\n");
-            this.feedbackComments.append("  Actual: " + this.evalReturnType + "\n");
+            this.feedbackCommentsSB.append("\n- Method does not have correct return type\n");
+            this.feedbackCommentsSB.append("  Expected: " + this.parameters.get(0) + "\n");
+            this.feedbackCommentsSB.append("  Actual: " + this.evalReturnType + "\n");
         }
-        
-        System.out.println("Return Type check: " + ((status) ? "Passed" : "Failed"));
         return status;
     }
 }
