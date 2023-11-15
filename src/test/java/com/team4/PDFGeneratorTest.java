@@ -24,7 +24,7 @@ public class PDFGeneratorTest {
 
         PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
+        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
         contentStream.beginText();
         contentStream.showText("Hello World\n\n\nThis is a sample report generation");
         contentStream.endText();
