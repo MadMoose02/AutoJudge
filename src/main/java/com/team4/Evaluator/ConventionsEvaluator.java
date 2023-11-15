@@ -258,6 +258,27 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+    //valid method declaration
+
+    private boolean validMethodSyntax ( String AccessModifier , String type , String Name  ){
+
+        if(validAccessModifier(AccessModifier) && validDataTypes(type) && isCamelCase(Name)){
+            return true ; 
+        }
+
+        return false ; 
+
+
+    }
+
+//    private boolean validMethod ( String line  ){
+
+        
+
+
+
+   // }
+
 
 
     /* 
