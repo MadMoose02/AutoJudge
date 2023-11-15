@@ -18,19 +18,23 @@ public class PDFGeneratorTest {
         String testFilePath = System.getProperty("user.dir") + File.separator 
             + "src" + File.separator + "test" + File.separator + "resources" 
             + File.separator + "TestReport.pdf";
+        File testFile = new File(testFilePath);
+        if (testFile.exists()) testFile.delete();
         PDDocument doc = new PDDocument();
         PDPage page = new PDPage();
         doc.addPage(page);
 
         PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
+        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD), 18);
 
         try {
             contentStream.beginText();
             contentStream.newLineAtOffset(25, 725);
             contentStream.showText("AutoJudge Sample Report");
             contentStream.newLineAtOffset(0, -25);
+
+            contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
             contentStream.showText("This is a sample report generation");
             contentStream.endText();
             contentStream.close();
