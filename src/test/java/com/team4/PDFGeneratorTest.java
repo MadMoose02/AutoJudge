@@ -41,6 +41,7 @@ public class PDFGeneratorTest {
 
         // Save the document
         doc.save(testFilePath);
+        System.out.println("PDF saved to: " + testFilePath);
         doc.close();
     }
 }
