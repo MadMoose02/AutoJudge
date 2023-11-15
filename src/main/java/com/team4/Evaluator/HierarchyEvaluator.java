@@ -12,6 +12,24 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         this.score = 0.0;
     }
 
+    private double checksInheritance (File javaFile, String keyword){
+        try (Scanner scan = new Scanner(javaFile)) {
+            while (scan.hasNext()) {
+                String line = scan.nextLine();
+                
+                if (line.contains(keyword)){
+                    return 1.0;
+                }
+            } 
+        }
+
+        catch (FileNotFoundException e) {
+            System.out.print("File Not Found");
+        }
+        return 0.0;
+    }
+
+
     //associationClass - eg. Flight/Passenger/LuggageSlip
     private double checksAssociation (File javaFile, String associationClass){
         try (Scanner scan = new Scanner(javaFile)) {
@@ -43,7 +61,11 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         if (filename == "LuggageManifest"){
             this.score += checksAssociation(javaDocument, "LuggageSlip");
         }
+
+        this.score += checksInheritance(javaDocument, "extends");
+
         return this.score;
+
     }
     
 }
