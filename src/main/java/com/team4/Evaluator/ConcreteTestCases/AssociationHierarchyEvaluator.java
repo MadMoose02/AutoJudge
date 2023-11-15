@@ -61,7 +61,7 @@ public class AssociationHierarchyEvaluator extends TestCase {
             e.printStackTrace(); 
         }
 
-        this.failureMsg = "\n  No association found: ";
+        this.failureMsg = "No association found ";
         return false;
     }
 
