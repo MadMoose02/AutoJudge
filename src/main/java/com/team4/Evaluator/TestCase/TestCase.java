@@ -11,7 +11,7 @@ public abstract class TestCase implements AbstractTestCase {
     protected String testName;
     protected File testFile;
     protected ArrayList<String> parameters;
-    protected ArrayList<String> feedbackComments;
+    protected String feedbackComments;
 
     /**
      * Default constructor
@@ -23,10 +23,10 @@ public abstract class TestCase implements AbstractTestCase {
         this.testName = testName;
         this.testFile = testFile;
         this.parameters = (parameters != null) ? new ArrayList<>(List.of(parameters)) : new ArrayList<>();
-        this.feedbackComments = new ArrayList<>();
     }
 
-    // Abstract method
+    // Abstract methods
+    public abstract String getFeedbackComments();
     public abstract boolean testCriteria() throws Exception;
 
     // Template method
