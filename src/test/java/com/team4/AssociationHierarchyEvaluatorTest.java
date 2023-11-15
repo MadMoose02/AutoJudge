@@ -1,0 +1,27 @@
+package com.team4;
+
+import java.io.File;
+
+import org.junit.Test;
+
+import com.team4.Evaluator.ConcreteTestCases.AssociationHierarchyEvaluator;
+
+public class AssociationHierarchyEvaluatorTest {
+    
+    @Test
+    public void testAssociationHierarchyEvaluator() {
+        String testFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + 
+            "test" + File.separator + "resources" + File.separator + "LuggageManagementSystem.java";
+        File testFile = new File(testFilePath);
+        AssociationHierarchyEvaluator test = new AssociationHierarchyEvaluator(
+            "test", 
+            testFile,
+            new String[]{
+                "Flight",
+                "Passenger"
+            }
+        );
+        try { test.runTest(); } catch (Exception e) { e.printStackTrace(); }
+        System.out.println(test.getFeedbackComments());
+    }
+}
