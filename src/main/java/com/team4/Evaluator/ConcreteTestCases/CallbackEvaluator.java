@@ -1,6 +1,8 @@
 package com.team4.Evaluator.ConcreteTestCases;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.team4.Evaluator.TestCase.TestCase;
 
@@ -8,6 +10,7 @@ public class CallbackEvaluator extends TestCase {
 
     private StringBuilder feedbackComments;
     private String evalMethodName;
+    private String methodBody;
     private String evalCallbackMethodName;
 
     public CallbackEvaluator(String testName, File testFile, String[] parameters, String evalMethodName) {
@@ -22,14 +25,63 @@ public class CallbackEvaluator extends TestCase {
         return this.feedbackComments.toString();
     }
 
+    private void extractMethodBody() throws Exception {
+        int iter = 0;
+        String line = "";
+        ArrayList<String> methodBodyLines = new ArrayList<>();
+        Scanner scan;
+
+        try {
+            scan = new Scanner(this.testFile);
+
+            // Skip lines until reached constructor
+            while (scan.hasNextLine()) {
+                if (++iter > MAX_LINES) break;
+                line = scan.nextLine();
+                if (!line.contains(this.evalMethodName)) continue;
+
+                // Check if constructor is present
+                if (line.contains(this.evalMethodName) && line.contains("(")) {
+                    while (!line.contains("}")){
+                        methodBodyLines.add(line);
+                        line = scan.nextLine();
+                    }
+                    methodBodyLines.add(line);
+                
+                } else { continue; }
+
+                // Concatenate method body lines
+                for (String each : methodBodyLines) {
+                    methodBody += each.trim();
+                }
+                scan.close();
+                break;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Unable to extract constructor body from file: " + this.testFile.getName()); 
+            e.printStackTrace(); 
+        }
+    }
+
+
+
     @Override
     public boolean testCriteria() throws Exception {
+        boolean flag = false;
+        extractMethodBody();
 
-        // Sift through code, find code block with method name
-        
-        // Check that the method is called in the method body
+        if(!methodBody.contains(evalCallbackMethodName)){
+            this.feedbackComments.append("\n- Method does not have a call back method");
+            this.feedbackComments.append("\n");
+        }
 
-        return true;
+        if (methodBody.contains(evalCallbackMethodName)) {
+            System.out.println("Call back Method check: " + (methodBody.contains(evalCallbackMethodName) ? "Passed" : "Failed"));
+            flag = true;
+        }
+
+        return flag;
     }
     
 }
