@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import com.team4.Evaluator.ConcreteTestCases.AssociationHierarchyEvaluator;
+import com.team4.Evaluator.TestCase.*;
+
 public class HierarchyEvaluator implements SyntaxEvaluator {
 
     private double score;
+    private AbstractTestCollection testCollection;
 
     public HierarchyEvaluator() {
         this.score = 0.0;
+        this.testCollection = new TestCollection();
     }
 
     private double checksInheritance (File javaFile, String keyword){
@@ -51,20 +56,44 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
 
     @Override
     public double evaluate(File javaDocument) {
-        String filename = javaDocument.getName();
+        String filename = javaDocument.getName().substring(0, javaDocument.getName().indexOf("."));
 
-        if (filename == "LuggageManagementSystem"){
-            this.score += checksAssociation(javaDocument, "Flight");
-            this.score += checksAssociation(javaDocument, "Passenger");
+        if (filename.equals("LuggageManagementSystem")){
+            this.testCollection.addTestCase(
+                new AssociationHierarchyEvaluator(
+                    "Association check for '" + javaDocument.getName() + "'", 
+                    javaDocument,
+                    new String[]{
+                        "Flight",
+                        "Passenger"
+                    }
+                )
+            );
         }
 
-        if (filename == "LuggageManifest"){
-            this.score += checksAssociation(javaDocument, "LuggageSlip");
+        if (filename.equals("LuggageManifest")){
+            this.testCollection.addTestCase(
+                new AssociationHierarchyEvaluator(
+                    "Association check for '" + javaDocument.getName() + "'", 
+                    javaDocument,
+                    new String[]{"LuggageSlip"}
+                )
+            );
         }
 
-        this.score += checksInheritance(javaDocument, "extends");
+        AbstractTestCollectionIterator iterator = this.testCollection.getIterator();
+        while (iterator.hasNext()) {
+            AbstractTestCase testCase = iterator.next();
+            try {
 
-        return this.score;
+                this.score = (testCase.runTest()) ? 1.0 : 0.0;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return (double) this.score / (double) this.testCollection.size() * 100.0;
 
     }
     
