@@ -99,7 +99,7 @@ public class AutoJudgeSystem implements AutoJudge {
         TreeMap<String, File> submissionsFolder = new TreeMap<>();
         try { submissionsFolder = this.submissionDecompressor.decompress(); }
         catch (Exception e) { 
-            e.printStackTrace();
+            System.out.println("\nUnable to decompress submissions zip folder: " + this.zippedSubmissionsFilename + "\n");
             System.exit(1);
         }
 
@@ -110,8 +110,7 @@ public class AutoJudgeSystem implements AutoJudge {
             );
             try { this.submissions.put(submission, this.submissionDecompressor.decompress()); }
             catch (Exception e) { 
-                e.printStackTrace();
-                System.exit(1);
+                System.out.println("Unable to decompress submission: " + submission + "\n");
             }
         }
 
