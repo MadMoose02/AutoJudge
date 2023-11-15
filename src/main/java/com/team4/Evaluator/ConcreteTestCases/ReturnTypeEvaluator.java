@@ -8,14 +8,21 @@ import com.team4.Evaluator.TestCase.TestCase;
 public class ReturnTypeEvaluator extends TestCase {
 
     private StringBuilder feedbackComments;
+    private String evalMethodSignature;
     private String evalMethodName;
     private String evalReturnType;
 
+    /**
+     * Default constructor
+     * @param testName The name of the test case
+     * @param testFile The file to test
+     * @param parameters The return type to check
+     * @param evalMethodName The method to evaluate
+     */
     public ReturnTypeEvaluator(String testName, File testFile, String[] parameters, String evalMethodName) {
         super(testName, testFile, parameters);
         this.feedbackComments = new StringBuilder();
         this.evalMethodName = evalMethodName;
-        this.evalReturnType = (this.parameters != null) ? this.parameters.get(0) : null;
     }
 
     @Override
@@ -23,44 +30,57 @@ public class ReturnTypeEvaluator extends TestCase {
         return this.feedbackComments.toString();
     }
 
-    private String locateMethod(){
-        String line = " ";
-        String found = " ";
-        Scanner scan;
-        try {
-            scan = new Scanner(testFile);
+    private boolean locateEvalMethod(){
+        String line = "";
 
-            while(scan.hasNextLine()){
+        try (Scanner scan = new Scanner(testFile)) {
+            while (scan.hasNextLine()) {
                 line = scan.nextLine();
-                if (!line.contains(evalMethodName)) continue;
-                if (line.contains(evalMethodName)){
-                   found = line ;
+                if (!line.contains(this.evalMethodName)) continue;
+                if (line.contains(this.parameters.get(0)) && line.contains(this.evalMethodName)) {
+                    line = line.substring(0, line.indexOf(")") - 1);
+                    this.evalMethodSignature = line.trim();
+                    return true;
                 }
-                scan.close();
             }
+            this.feedbackComments.append("\n- Method '" + this.evalMethodName + "' not found in '" 
+                + this.testFile.getName() + "'\n");
             
         } catch (Exception e) {
-            System.out.println("Unable to locate method: " + this.testFile.getName()); 
             e.printStackTrace(); 
         }
-        return found;
+
+        return false;
+    }
+
+    private void locateEvalMethodReturnType() {
+        String[] methodSignature = this.evalMethodSignature.replace("static", "").split(" ");
+        if (methodSignature[0].trim().equals(this.testFile.getName().replace(".java", ""))) {
+            this.evalReturnType = "void";
+            return;
+        }
+        this.evalReturnType = methodSignature[1].trim();
     }
 
     @Override
     public boolean testCriteria() throws Exception {
-
-       String found = locateMethod();
-       Boolean flag = false;
-
-        if (!(found.contains(evalReturnType))) {
-            this.feedbackComments.append("\n- Method does not have correct return type");
-            this.feedbackComments.append("\n");
+        boolean status;
+        
+        if (!(status = locateEvalMethod())) {
+            return status;
         }
-        if (found.contains(evalReturnType)){
-            System.out.println("Return Type check: " + (found.contains(evalReturnType) ? "Passed" : "Failed"));
-            flag = true;
+        System.out.println("Method signature: " + this.evalMethodSignature);
+        
+        locateEvalMethodReturnType();
+        System.out.println("Method return type: " + this.evalReturnType);
+        
+        if (!(status = this.parameters.get(0).equals(evalReturnType))) {
+            this.feedbackComments.append("\n- Method does not have correct return type\n");
+            this.feedbackComments.append("  Expected: " + this.parameters.get(0) + "\n");
+            this.feedbackComments.append("  Actual: " + this.evalReturnType + "\n");
         }
         
-        return flag;
+        System.out.println("Return Type check: " + ((status) ? "Passed" : "Failed"));
+        return status;
     }
 }
