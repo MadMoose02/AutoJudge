@@ -16,12 +16,22 @@ public class AssociationHierarchyEvaluatorTest {
         AssociationHierarchyEvaluator test = new AssociationHierarchyEvaluator(
             "test", 
             testFile,
-            new String[]{
-                "Flight",
-                "Passenger"
-            }
+            new String[]{"Flight"}
         );
-        try { test.runTest(); } catch (Exception e) { e.printStackTrace(); }
-        System.out.println(test.getFeedbackComments());
+
+        AssociationHierarchyEvaluator test1 = new AssociationHierarchyEvaluator(
+            "test1", 
+            testFile,
+            new String[]{"Passenger"}
+        );
+
+        try { 
+            test.runTest(); 
+            System.out.println(test.getFeedbackComments());
+
+            test1.runTest(); 
+            System.out.println(test1.getFeedbackComments());
+        } catch (Exception e) { e.printStackTrace(); }
+        
     }
 }

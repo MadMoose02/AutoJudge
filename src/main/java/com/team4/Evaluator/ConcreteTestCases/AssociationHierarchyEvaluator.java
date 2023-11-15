@@ -1,15 +1,12 @@
 package com.team4.Evaluator.ConcreteTestCases;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import com.team4.Evaluator.TestCase.TestCase;
 
 public class AssociationHierarchyEvaluator extends TestCase {
 
-    private String attributes;
     private String evalClassName;
     private StringBuilder feedbackCommentSB;
     private String failureMsg;
@@ -36,10 +33,9 @@ public class AssociationHierarchyEvaluator extends TestCase {
         return this.feedbackCommentSB.toString();    
     }
 
-    private void extractAttributes() throws Exception {
+    private boolean associationCheck() throws Exception {
         int iter = 0;
         String line = "";
-        ArrayList<String> attributeLines = new ArrayList<>();
         Scanner scan;
 
         try {
@@ -49,60 +45,31 @@ public class AssociationHierarchyEvaluator extends TestCase {
             while (scan.hasNextLine()) {
                 if (++iter > MAX_LINES) break;
                 line = scan.nextLine();
-                if (!line.contains(this.evalClassName)) continue;
 
                 // Check if attributes are present
-                if (line.contains("class") && line.contains(this.evalClassName) && line.contains("{")) {
-                    while (!line.contains("(")){
-                        attributeLines.add(line);
-                        line = scan.nextLine();
-                    }
-                
-                } else { continue; }
-
-                // Concatenate attribute lines
-                for (String each : attributeLines) {
-                    this.attributes += each.trim();
-                }
-                scan.close();
-                break;
+                if (!line.contains(".") && line.contains("Flight") || line.contains("Passenger") && this.evalClassName.equals("LuggageManagementSystem")) {
+                    scan.close();
+                    return true;
+                } else if (!line.contains(".") && line.contains("LuggageSlip") && this.evalClassName.equals("LuggageManifest")){
+                    scan.close();
+                    return true;
+                } else{ continue; }
             }
 
         } catch (Exception e) {
             System.out.println("Unable to extract attributes from file: " + this.testFile.getName()); 
             e.printStackTrace(); 
         }
-    }
 
-
-    private boolean checkAssociation() {
-        String[] attributeLines = this.attributes.split(";");
-        ArrayList<String> attributes = new ArrayList<>(List.of(attributeLines));
-        ArrayList<String> foundAttributeTypes = new ArrayList<>();
-        
-        for (String each : attributes) {
-            if (each.contains("Flight") || each.contains("Passenger") && this.evalClassName.equals("LuggageManagementSystem")) {
-                foundAttributeTypes.add(each);
-            }
-            if (each.contains("LuggageSlip") && this.evalClassName.equals("LuggageManifest")) {
-                foundAttributeTypes.add(each);
-            }
-        }
-        
-        if (foundAttributeTypes.isEmpty()) {
-            this.failureMsg = "\n  No association found: ";
-            return false;
-        }
-        else
-            return true;
+        this.failureMsg = "\n  No association found: ";
+        return false;
     }
 
     @Override
     public boolean testCriteria() throws Exception {
         boolean status = false;
-        extractAttributes();
 
-        if (!(status = this.checkAssociation())) {
+        if (!(status = this.associationCheck())) {
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
         }

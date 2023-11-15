@@ -34,49 +34,28 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         return 0.0;
     }
 
-
-    //associationClass - eg. Flight/Passenger/LuggageSlip
-    private double checksAssociation (File javaFile, String associationClass){
-        try (Scanner scan = new Scanner(javaFile)) {
-            while (scan.hasNext()) {
-                String line = scan.nextLine();
-                
-                if (line.contains(associationClass)){
-                    return 1.0;
-                }
-            } 
-        }
-
-        catch (FileNotFoundException e) {
-            System.out.print("File Not Found");
-        }
-        return 0.0;
-    }
-
-
     @Override
     public double evaluate(File javaDocument) {
         String filename = javaDocument.getName().substring(0, javaDocument.getName().indexOf("."));
 
         if (filename.equals("LuggageManagementSystem")){
             this.testCollection.addTestCase(
-                new AssociationHierarchyEvaluator(
-                    "Association check for '" + javaDocument.getName() + "'", 
-                    javaDocument,
-                    new String[]{
-                        "Flight",
-                        "Passenger"
-                    }
+                new AssociationHierarchyEvaluator("Association check for '" + javaDocument.getName() + "'", 
+                                                    javaDocument, new String[]{"Flight"}
+                )
+            );
+            
+            this.testCollection.addTestCase(
+                new AssociationHierarchyEvaluator("Association check for '" + javaDocument.getName() + "'", 
+                                                    javaDocument, new String[]{"Passenger"}
                 )
             );
         }
 
         if (filename.equals("LuggageManifest")){
             this.testCollection.addTestCase(
-                new AssociationHierarchyEvaluator(
-                    "Association check for '" + javaDocument.getName() + "'", 
-                    javaDocument,
-                    new String[]{"LuggageSlip"}
+                new AssociationHierarchyEvaluator("Association check for '" + javaDocument.getName() + "'", 
+                                                    javaDocument, new String[]{"LuggageSlip"}
                 )
             );
         }
