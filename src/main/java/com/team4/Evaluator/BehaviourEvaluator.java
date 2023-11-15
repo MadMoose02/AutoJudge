@@ -35,7 +35,7 @@ public class BehaviourEvaluator implements SyntaxEvaluator {
                 "String origin", 
                 "LocalDateTime flightDate"
             };
-            this.classAttributes = new String[]{
+            this.instanceAttributes = new String[]{
                 "LuggageManifest manifest"
             };
         }
