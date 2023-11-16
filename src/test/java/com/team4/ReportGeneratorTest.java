@@ -24,29 +24,5 @@ public class ReportGeneratorTest {
         );
         gen.addEntryToReport("This is a test feedback entry", 100.0);
         gen.generateReport();
-
-        PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-
-        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD), 18);
-
-        try {
-            contentStream.beginText();
-            contentStream.newLineAtOffset(25, 725);
-            contentStream.showText("AutoJudge Sample Report");
-            contentStream.newLineAtOffset(0, -25);
-
-            contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
-            contentStream.showText("This is a sample report generation");
-            contentStream.endText();
-            contentStream.close();
-        } catch (Exception e) {
-            System.out.println("Unable to write to PDF");
-            e.printStackTrace();
-        }
-
-        // Save the document
-        doc.save(testFilePath);
-        System.out.println("PDF saved to: " + testFilePath);
-        doc.close();
     }
 }
