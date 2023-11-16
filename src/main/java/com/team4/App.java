@@ -9,6 +9,6 @@ public class App {
         AutoJudge autoJudge = new AutoJudgeSystem("Submissions.zip");
         autoJudge.evaluateSubmissions();
         autoJudge.generatePDFReport();
-        // autoJudge.displayEvaluationResults();
+        autoJudge.displayEvaluationResults();
     }
 }
