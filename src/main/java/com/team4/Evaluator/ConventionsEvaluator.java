@@ -7,18 +7,18 @@ import java.util.Scanner;
 public class ConventionsEvaluator implements SyntaxEvaluator {
     
     private double score; // store the items in the java file in these , attributes 
-    private String filename;
-    private String className;
-    private String constructorName;
-    private String FligthNoAttribute ; 
-    private String passportNumberAttribute ; 
-    private String firstNameAttribute ; 
-    private String lastNameAttribute ; 
-    private String numLuggageAttribute ; 
-    private String cabinClassAttribute ; 
+    // private String filename;
+    // private String className;
+    // private String constructorName;
+    // private String FligthNoAttribute ; 
+    // private String passportNumberAttribute ; 
+    // private String firstNameAttribute ; 
+    // private String lastNameAttribute ; 
+    // private String numLuggageAttribute ; 
+    // private String cabinClassAttribute ; 
 
-    private String methodName;
-    private boolean correctSignature;
+    // private String methodName;
+    // private boolean correctSignature;
    
 
 
@@ -263,24 +263,22 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
                 total++ ; 
             }
 
+            line = sc.nextLine() ; 
 
-            while(sc.hasNextLine()){
+            while(!detectConstructor(Filename, line) ){
 
+            boolean tf =  AttributeSyntaxCheck(line); 
+            if(tf)
+                total++ ;
 
-                if(!detectConstructor(Filename, line)){ // it will go in here for methods 
-                   boolean tf =  AttributeSyntaxCheck(line); 
-                   if(tf)
-                    total++ ;
-                }
-                else{
-                    total++ ; 
-                }
-
-                line = sc.nextLine() ; 
+            
+            line = sc.nextLine() ; 
 
             }
                        
             sc.close() ;
+
+
         }
         
         catch(Exception e){

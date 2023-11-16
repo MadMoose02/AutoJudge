@@ -44,13 +44,13 @@ public class AssociationHierarchyEvaluator extends TestCase {
                 line = scan.nextLine();
 
                 // Check if attributes are present
-                if (!line.contains(".") && line.contains("Flight") && this.evalClassName.equals("LuggageManagementSystem") && associationType.equals("Flight")) {
+                if (!line.contains(".") && this.evalClassName.equals("LuggageManagementSystem") && line.contains(this.associationType)) {
                     scan.close();
                     return true;
-                } else if (!line.contains(".") && line.contains("Passenger") && this.evalClassName.equals("LuggageManagementSystem") && associationType.equals("Passenger")){
+                } else if (!line.contains(".") && this.evalClassName.equals("LuggageManagementSystem") && line.contains(this.associationType)){  
                     scan.close();
                     return true;
-                } else if (!line.contains(".") && line.contains("LuggageSlip") && this.evalClassName.equals("LuggageManifest") && associationType.equals("LuggageSlip")) {
+                } else if (!line.contains(".") && line.contains(this.associationType) && this.evalClassName.equals("LuggageManifest")) {
                     scan.close();
                     return true;
                 } else { continue; }
