@@ -25,13 +25,19 @@ public abstract class TestCase implements AbstractTestCase {
         this.parameters = (parameters != null) ? new ArrayList<>(List.of(parameters)) : new ArrayList<>();
     }
 
+
+    // Getters
+    public String getTestName() { return this.testName; }
+    public String getFeedbackComments() { return this.feedbackComments; }
+
+
     // Abstract methods
-    public abstract String getFeedbackComments();
     public abstract boolean testCriteria() throws Exception;
+
 
     // Template method
     public final boolean runTest() throws Exception {
-        System.out.println("* Running Test Case: " + this.testName);
+        System.out.println("* Running: " + this.testName);
         return this.testCriteria();
     }
 }

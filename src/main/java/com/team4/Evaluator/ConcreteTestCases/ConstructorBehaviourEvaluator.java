@@ -71,10 +71,6 @@ public class ConstructorBehaviourEvaluator extends TestCase {
 
     // Methods
 
-    @Override
-    public String getFeedbackComments() {
-        return this.feedbackCommentSB.toString();    
-    }
 
     private void extractConstructorBody() throws Exception {
         int iter = 0;
@@ -257,7 +253,7 @@ public class ConstructorBehaviourEvaluator extends TestCase {
             this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
-
+        this.feedbackComments = this.feedbackCommentSB.toString();
         return (this.numTestsPassed == 2);
     }
 }

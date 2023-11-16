@@ -20,8 +20,22 @@ public class Evaluator implements SyntaxEvaluator {
     }
 
 
-    // Methods
+    // Getters
 
+    public String getFeedbackComments() {
+        StringBuilder feedbackComments = new StringBuilder();
+        for (SyntaxEvaluator evaluator : this.evaluators) {
+            feedbackComments.append(
+                "Evaluation Type: " + evaluator.getClass().getSimpleName() + "\n" +
+                evaluator.getFeedbackComments() + "\n\n"
+            );
+        }
+        return feedbackComments.toString();
+    }
+
+
+    // Methods
+    
     @Override
     public double evaluate(File javaDocument) {
         for (SyntaxEvaluator evaluator : this.evaluators) {

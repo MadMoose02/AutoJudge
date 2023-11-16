@@ -28,11 +28,6 @@ public class AssociationHierarchyEvaluator extends TestCase {
 
     // Methods
 
-    @Override
-    public String getFeedbackComments() {
-        return this.feedbackCommentSB.toString();    
-    }
-
     private boolean associationCheck() throws Exception {
         int iter = 0;
         String line = "";
@@ -75,6 +70,7 @@ public class AssociationHierarchyEvaluator extends TestCase {
             this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
+        this.feedbackComments = this.feedbackCommentSB.toString();
         return (this.numTestsPassed == 1);
     }
 }

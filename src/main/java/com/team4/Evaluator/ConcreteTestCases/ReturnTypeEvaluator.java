@@ -7,7 +7,7 @@ import com.team4.Evaluator.TestCase.TestCase;
 
 public class ReturnTypeEvaluator extends TestCase {
 
-    private StringBuilder feedbackCommentsSB;
+    private StringBuilder feedbackCommentSB;
     private String evalMethodSignature;
     private String evalMethodName;
     private String evalReturnType;
@@ -21,17 +21,13 @@ public class ReturnTypeEvaluator extends TestCase {
      */
     public ReturnTypeEvaluator(String testName, File testFile, String[] parameters, String evalMethodName) {
         super(testName, testFile, parameters);
-        this.feedbackCommentsSB = new StringBuilder();
+        this.feedbackCommentSB = new StringBuilder();
         this.evalMethodName = evalMethodName;
     }
 
 
     // Methods
 
-    @Override
-    public String getFeedbackComments() {
-        return this.feedbackCommentsSB.toString();
-    }
 
     private boolean locateEvalMethod(){
         String line = "";
@@ -50,7 +46,7 @@ public class ReturnTypeEvaluator extends TestCase {
                     return true;
                 }
             }
-            this.feedbackCommentsSB.append("\n- Method '" + this.evalMethodName + "' not found in '" 
+            this.feedbackCommentSB.append("\n- Method '" + this.evalMethodName + "' not found in '" 
                 + this.testFile.getName() + "'\n");
             
         } catch (Exception e) {
@@ -79,12 +75,13 @@ public class ReturnTypeEvaluator extends TestCase {
         
         locateEvalMethodReturnType();
         
-        this.feedbackCommentsSB.append("Return Type check: " + ((status) ? "Passed" : "Failed") + "\n");
+        this.feedbackCommentSB.append("Return Type check: " + ((status) ? "Passed" : "Failed") + "\n");
         if (!(status = this.parameters.get(0).equals(evalReturnType))) {
-            this.feedbackCommentsSB.append("\n- Method does not have correct return type\n");
-            this.feedbackCommentsSB.append("  Expected: " + this.parameters.get(0) + "\n");
-            this.feedbackCommentsSB.append("  Actual: " + this.evalReturnType + "\n");
+            this.feedbackCommentSB.append("\n- Method does not have correct return type\n");
+            this.feedbackCommentSB.append("  Expected: " + this.parameters.get(0) + "\n");
+            this.feedbackCommentSB.append("  Actual: " + this.evalReturnType + "\n");
         }
+        this.feedbackComments = this.feedbackCommentSB.toString();
         return status;
     }
 }

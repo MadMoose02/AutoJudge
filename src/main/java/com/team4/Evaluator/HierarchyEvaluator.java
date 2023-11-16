@@ -10,11 +10,21 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
 
     private double score;
     private AbstractTestCollection testCollection;
+    private StringBuilder feedbackComments;
 
     public HierarchyEvaluator() {
         this.score = 0.0;
         this.testCollection = new TestCollection();
+        this.feedbackComments = new StringBuilder();
     }
+
+    // Getters
+    
+    @Override
+    public String getFeedbackComments() { return this.feedbackComments.toString(); }
+
+
+    // Methods
 
     @Override
     public double evaluate(File javaDocument) {
@@ -64,6 +74,7 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
             );
         }
 
+        // Evaluate the test cases
         AbstractTestCollectionIterator iterator = this.testCollection.getIterator();
         while (iterator.hasNext()) {
             AbstractTestCase testCase = iterator.next();
@@ -71,9 +82,6 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
             catch (Exception e) {System.out.println("TEST CASE FAILED");}
             
         }
-
         return (double) this.score / (double) this.testCollection.size() * 100.0;
-
-    }
-    
+    }    
 }

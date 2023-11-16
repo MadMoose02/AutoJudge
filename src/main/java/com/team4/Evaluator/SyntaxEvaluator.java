@@ -11,4 +11,10 @@ public interface SyntaxEvaluator {
      * @return Score between 0.0 and 100.0
      */
     double evaluate(File javaDocument);
+
+
+    /**
+     * Returns the feedback comments for the evaluation
+     */
+    String getFeedbackComments();
 }

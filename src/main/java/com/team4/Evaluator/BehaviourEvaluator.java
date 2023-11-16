@@ -11,19 +11,28 @@ public class BehaviourEvaluator implements SyntaxEvaluator {
         
     private double score;
     private TestCollection testCollection;
+    private StringBuilder feedbackComments;
     private String[] evalParams = null;
     private String[] instanceAttributes = null;
     private String[] classAttributes = null;
 
+    /**
+     * Default constructor
+     */
     public BehaviourEvaluator() {
         this.score = 0.0;
         this.testCollection = new TestCollection();
+        this.feedbackComments = new StringBuilder();
     }
 
-    public BehaviourEvaluator(TestCollection testCollection) {
-        this.score = 0.0;
-        this.testCollection = testCollection;
-    }
+
+    // Getters
+
+    @Override
+    public String getFeedbackComments() { return this.feedbackComments.toString(); }
+
+
+    // Methods
 
     private void setEvaluationConfig(File rubric) {
         if (rubric == null) return;
@@ -73,13 +82,14 @@ public class BehaviourEvaluator implements SyntaxEvaluator {
 
     @Override
     public double evaluate(File javaDocument) {
-        
+        String filename = javaDocument.getName().substring(0, javaDocument.getName().indexOf("."));
+
         // Evaluate the constructor behaviour
-        if (!javaDocument.getName().contains("LuggageManagementSystem")) {
+        if (!filename.contains("LuggageManagementSystem")) {
             this.setEvaluationConfig(javaDocument);
             this.testCollection.addTestCase(
                 new ConstructorBehaviourEvaluator(
-                    "Test " + javaDocument.getName() + " constructor behaviour",
+                    "Test '" + filename + "'' constructor behaviour",
                     javaDocument,
                     this.evalParams,
                     this.instanceAttributes,
@@ -88,18 +98,13 @@ public class BehaviourEvaluator implements SyntaxEvaluator {
             );
         }
 
-        // Evaluate all other method behaviours
-        try {
-            AbstractTestCollectionIterator iter = this.testCollection.getIterator();
-            while (iter.hasNext()) {
-                AbstractTestCase testCase = iter.next();
-                this.score += (testCase.runTest()) ? 1.0 : 0.0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Evaluate the test cases
+        AbstractTestCollectionIterator iterator = this.testCollection.getIterator();
+        while (iterator.hasNext()) {
+            AbstractTestCase testCase = iterator.next();
+            try { this.score = (testCase.runTest()) ? 1.0 : 0.0; } 
+            catch (Exception e) { System.out.println("\nTEST CASE FAILED"); }
         }
-
         return this.score / (double) this.testCollection.size() * 100.0;
     }
-    
 }

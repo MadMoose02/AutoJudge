@@ -8,22 +8,27 @@ import com.team4.Evaluator.TestCase.TestCase;
 
 public class CallbackEvaluator extends TestCase {
 
-    private StringBuilder feedbackComments;
+    private StringBuilder feedbackCommentSB;
     private String evalMethodName;
     private String methodBody;
     private String evalCallbackMethodName;
 
+    /**
+     * Default constructor
+     * @param testName The name of the test case
+     * @param testFile The file to test
+     * @param parameters The method to check for callback
+     * @param evalMethodName The method to evaluate
+     */
     public CallbackEvaluator(String testName, File testFile, String[] parameters, String evalMethodName) {
         super(testName, testFile, parameters);
-        this.feedbackComments = new StringBuilder();
+        this.feedbackCommentSB = new StringBuilder();
         this.evalMethodName = evalMethodName;
         this.evalCallbackMethodName = (this.parameters != null) ? this.parameters.get(0) : null;
     }
 
-    @Override
-    public String getFeedbackComments() {
-        return this.feedbackComments.toString();
-    }
+
+    // Methods
 
     private void extractMethodBody() throws Exception {
         int iter = 0;
@@ -72,11 +77,13 @@ public class CallbackEvaluator extends TestCase {
         extractMethodBody();
 
         status = methodBody.contains(evalCallbackMethodName);
-        this.feedbackComments.append("Method calls required function: " + ((status) ? "Passed" : "Failed") + "\n");
+        this.feedbackCommentSB.append("Method calls required function: " + ((status) ? "Passed" : "Failed") + "\n");
 
         if(!status)
-            this.feedbackComments.append("\n- Method '" + this.evalMethodName + "' does not call the required function: " 
+            this.feedbackCommentSB.append("\n- Method '" + this.evalMethodName + "' does not call the required function: " 
                 + evalCallbackMethodName + "\n");
+
+        this.feedbackComments = this.feedbackCommentSB.toString();
 
         return status;
     }
