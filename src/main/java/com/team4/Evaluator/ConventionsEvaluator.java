@@ -263,24 +263,22 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
                 total++ ; 
             }
 
+            line = sc.nextLine() ; 
 
-            while(sc.hasNextLine()){
+            while(!detectConstructor(Filename, line) ){
 
+            boolean tf =  AttributeSyntaxCheck(line); 
+            if(tf)
+                total++ ;
 
-                if(!detectConstructor(Filename, line)){ // it will go in here for methods 
-                   boolean tf =  AttributeSyntaxCheck(line); 
-                   if(tf)
-                    total++ ;
-                }
-                else{
-                    total++ ; 
-                }
-
-                line = sc.nextLine() ; 
+            
+            line = sc.nextLine() ; 
 
             }
                        
             sc.close() ;
+
+
         }
         
         catch(Exception e){
