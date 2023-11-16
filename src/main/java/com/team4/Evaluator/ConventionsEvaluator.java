@@ -252,7 +252,20 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             if (line == null)
                 return 0.00 ; 
 
+            //while(!checkClassLabel())
+
+            while(!line.contains("class")){
+                line = sc.nextLine() ; 
+
+            }
+
+            if(checkClassLabel(line , Filename)){
+                total++ ; 
+            }
+
+
             while(sc.hasNextLine()){
+
 
                 if(!detectConstructor(Filename, line)){ // it will go in here for methods 
                    boolean tf =  AttributeSyntaxCheck(line); 
