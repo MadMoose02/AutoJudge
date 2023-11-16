@@ -323,7 +323,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
 
 
-
+                line = sc.nextLine() ; 
 
 
             }
