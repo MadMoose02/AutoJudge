@@ -27,10 +27,6 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     // we pull from file opened and store in attributes 
 
 
-
-    
-
-
     //make a function combining syntax and camel case together 
     private boolean isCamelCase(String Name  ){
 
@@ -46,8 +42,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             if(Character.isUpperCase(Name.charAt(i)) && Character.isUpperCase(Name.charAt(i-1))){
                 return false ; 
             }
-
-           
+  
         }
 
          return true ; 
@@ -71,12 +66,10 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     private boolean validAccessModifier ( String AccessModifier){
 
-
         if(AccessModifier.equals("private")||AccessModifier.equals("public")||AccessModifier.equals("protected")){
             return true ; 
         }
 
-        
         return false ; 
 
     }
@@ -100,12 +93,9 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         }
 
         return false ; 
-
-
     }
 
-
-    //take in line , or // take in parameters 
+    //Take in line , or // take in parameters 
     private boolean AttributeSyntaxCheck ( String AttributeLine ){ 
 
         String[] attributeDeclaration = AttributeLine.split(" "); 
@@ -113,7 +103,6 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         if( attributeDeclaration.length < 1){
             return false ; 
         }
-
         else if ( attributeDeclaration.length <= 2 ){
 
             return valid3wordAttributeDeclaration(attributeDeclaration); 
@@ -124,58 +113,21 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             return valid4WordAttributeDeclaration(attributeDeclaration);
 
         }
-
-     
-        else
+        
         return false ; 
-
-    
-
     }
 
-
-    // !if syntax , does not match up with required doc then fail 
+    // !If syntax , does not match up with required doc then fail 
 
     public boolean MethodCompare ( String expectedReturnType , String actualReturnType ){
         return expectedReturnType.equals(actualReturnType); 
     }
 
-
-
     public ConventionsEvaluator() {
         this.score = 0.0;
     }
 
-    /* *
-    private boolean testClassName(String className) {
-        return this.className.equals(className);
-    }
-
-    private boolean testConstructorName(String constructorName) {
-        return this.constructorName.equals(constructorName);
-    }
-
-    private boolean testFligthNoAttribute (String FligthNoAttribute){
-        return this.FligthNoAttribute.equals(FligthNoAttribute) ; 
-    }
-
-    private boolean testPassportNumber ( String passportNumber){
-        return this.passportNumberAttribute.equals(passportNumber); 
-    }
-
-    private boolean testFirstName ( String firstNameAttribute){
-        return this.firstNameAttribute.equals(firstNameAttribute); 
-    }
-
-    private boolean 
-
-    */ 
-
-
-
-
-    // !how do we know when the attribtues are done then move to constructor 
-
+    // !How do we know when the attribtues are done then move to constructor 
 
     private boolean valid3wordClassLabel ( String [] classLabelLine , String filename ){
 
@@ -191,7 +143,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     private boolean valid4wordClassLabel (String [] classLabelLine , String filename){
 
          if( validAccessModifier(classLabelLine[0]) && (classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class")
-         && classLabelLine[3].equals(filename)){
+            && classLabelLine[3].equals(filename)){
 
                 return true ; 
         }
@@ -202,7 +154,6 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     private boolean valid6wordClassLabel (String [] classLabelLine , String filename){
 
-
         if(validAccessModifier(classLabelLine[0]) &&(classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class") && 
             classLabelLine[3].equals(filename) &&(classLabelLine[4].equals("implements") || (classLabelLine[4].equals("extends")))){
                 //implement a class checker 
@@ -212,7 +163,6 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
              return false ; 
 
     }
-
 
     private boolean checkClassLabel ( String ClassName , String filename  ){
        
@@ -246,7 +196,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false ; 
     }
 
-    //valid method declaration
+    //Valid method declaration
 
     private boolean validMethodSyntax ( String AccessModifier , String type , String Name  ){
         //! can takle off 
@@ -255,11 +205,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         }
 
         return false ; 
-
-
     }
-
-   
 
     private boolean validWordOrSyntax ( String word){
 
@@ -276,24 +222,22 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             if(validWordOrSyntax(s)== false)
             return false ; 
         }
-      
         
         return true  ; 
     }
     
+/*
+ * Read line until consturctor , to run the attribute checks eval the constructor,
+ * 
+ * After constructor then eval methods
+ * After return that is when we can start
+ * 
+ * Assume constructor needs to be written
+ * 
+ * ! Once line is processed , we generate a result on that 
+ * ! if it didnt pass then
+ */
 
-
- 
-//read line until consturctor , to run the attribute checks 
-//eval the constructor , 
-
-//after constructor then eval methods 
-// after return that is when we can start
-
-//assume constructor needs to be written
-
-//! Once line is processed , we generate a result on that 
-//! if it didnt pass then
     @Override
     public double evaluate(File javaDocument) {
         String Filename = javaDocument.getName() ; 
@@ -319,17 +263,10 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
                     total++ ; 
                 }
 
-
-
-
-
                 line = sc.nextLine() ; 
 
-
             }
-            
-            
-            
+                       
             sc.close() ;
         }
         
@@ -337,15 +274,8 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
             System.out.println(" "+ e.getMessage() + " ") ;
         }
         
-        
-
-        
-
-
-
         return this.score; 
 
-    
     }
 
     @Override
