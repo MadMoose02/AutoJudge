@@ -14,13 +14,13 @@ public class AssociationHierarchyEvaluatorTest {
             "test" + File.separator + "resources" + File.separator + "LuggageManagementSystem.java";
         File testFile = new File(testFilePath);
         AssociationHierarchyEvaluator test = new AssociationHierarchyEvaluator(
-            "test", 
+            "Test 1 - Flight Association", 
             testFile,
             new String[]{"Flight"}
         );
 
         AssociationHierarchyEvaluator test1 = new AssociationHierarchyEvaluator(
-            "test1", 
+            "Test 2- Passenger Association", 
             testFile,
             new String[]{"Passenger"}
         );

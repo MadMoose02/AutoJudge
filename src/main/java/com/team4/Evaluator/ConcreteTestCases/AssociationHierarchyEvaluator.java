@@ -11,6 +11,7 @@ public class AssociationHierarchyEvaluator extends TestCase {
     private StringBuilder feedbackCommentSB;
     private String failureMsg;
     private int numTestsPassed = 0;
+    private String associationType;
 
 
     /**
@@ -23,6 +24,7 @@ public class AssociationHierarchyEvaluator extends TestCase {
         super(testName, testFile, parameters);
         this.evalClassName = testFile.getName().substring(0, testFile.getName().indexOf("."));
         this.feedbackCommentSB = new StringBuilder();
+        this.associationType = parameters[0];
     }
 
 
@@ -42,13 +44,16 @@ public class AssociationHierarchyEvaluator extends TestCase {
                 line = scan.nextLine();
 
                 // Check if attributes are present
-                if (!line.contains(".") && line.contains("Flight") || line.contains("Passenger") && this.evalClassName.equals("LuggageManagementSystem")) {
+                if (!line.contains(".") && line.contains("Flight") && this.evalClassName.equals("LuggageManagementSystem") && associationType.equals("Flight")) {
                     scan.close();
                     return true;
-                } else if (!line.contains(".") && line.contains("LuggageSlip") && this.evalClassName.equals("LuggageManifest")){
+                } else if (!line.contains(".") && line.contains("Passenger") && this.evalClassName.equals("LuggageManagementSystem") && associationType.equals("Passenger")){
                     scan.close();
                     return true;
-                } else{ continue; }
+                } else if (!line.contains(".") && line.contains("LuggageSlip") && this.evalClassName.equals("LuggageManifest") && associationType.equals("LuggageSlip")) {
+                    scan.close();
+                    return true;
+                } else { continue; }
             }
 
         } catch (Exception e) {
@@ -64,12 +69,14 @@ public class AssociationHierarchyEvaluator extends TestCase {
     public boolean testCriteria() throws Exception {
         boolean status = false;
 
-        this.feedbackCommentSB.append("Association check: " + (status ? "Passed" : "Failed") + "\n");
+
         if (!(status = this.associationCheck())) {
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
+
+        this.feedbackCommentSB.append("Association check: " + (status ? "Passed" : "Failed") + "\n");
         this.feedbackComments = this.feedbackCommentSB.toString();
         return (this.numTestsPassed == 1);
     }
