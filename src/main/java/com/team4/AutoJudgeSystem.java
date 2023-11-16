@@ -152,8 +152,8 @@ public class AutoJudgeSystem implements AutoJudge {
                 System.out.println("\n> Evaluating file: " + submissionFilename);
                 double score = this.evaluator.evaluate(submissionFile);
                 submissionFeedbackComments.append(
-                    "File: " + submissionFilename + "\n" +
-                    this.evaluator.getFeedbackComments() + "\n"
+                    "File: " + submissionFilename +
+                    this.evaluator.getFeedbackComments()
                 );
                 if (!submissionFilename.equals(submission.lastKey())) {
                     submissionFeedbackComments.append("-".repeat(80) + "\n");
