@@ -347,5 +347,11 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     
     }
+
+    @Override
+    public String getFeedbackComments() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFeedbackComments'");
+    }
     
 }
