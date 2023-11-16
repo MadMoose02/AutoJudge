@@ -238,9 +238,8 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false; 
     }
 
-    private boolean detectConstructor ( File javaDocument , String line){
+    private boolean detectConstructor ( String  fileName , String line){
 
-        String fileName = javaDocument.getName() ; 
         if(line.contains(fileName) && line.contains("(") && line.contains(")")){
             return true ; 
         }
@@ -250,7 +249,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     //valid method declaration
 
     private boolean validMethodSyntax ( String AccessModifier , String type , String Name  ){
-
+        //! can takle off 
         if(validAccessModifier(AccessModifier) && validDataTypes(type) && isCamelCase(Name)){
             return true ; 
         }
@@ -261,18 +260,29 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     }
 
    
-    public double verifyConstructor (String fileName , String line  ){
 
-        if(line.contains(fileName) && line.contains("(") && line.contains(")")){
-            return 1.00 ; 
-        }
+    private boolean validWordOrSyntax ( String word){
 
-        return 0.00 ; 
-
-
+        return (validDataTypes(word)||validAccessModifier(word)||isCamelCase(word)||word.contains(",") );  
 
     }
+
+    private  boolean validMethod (String line ){
+
+        String [] methodSplit = line.split("[ )(]+"); 
+        
+        for(String s : methodSplit){
+            
+            if(validWordOrSyntax(s)== false)
+            return false ; 
+        }
+      
+        
+        return true  ; 
+    }
     
+
+
  
 //read line until consturctor , to run the attribute checks 
 //eval the constructor , 
@@ -287,6 +297,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     @Override
     public double evaluate(File javaDocument) {
         String Filename = javaDocument.getName() ; 
+        double total = 0.00 ; 
        
         try {
 
@@ -299,15 +310,19 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
             while(sc.hasNextLine()){
 
-                if(!detectConstructor(javaDocument, line)){
+                if(!detectConstructor(Filename, line)){ // it will go in here for methods 
                    boolean tf =  AttributeSyntaxCheck(line); 
+                   if(tf)
+                    total++ ;
+                }
+                else{
+                    total++ ; 
                 }
 
 
 
-                
 
-                //if(line)
+
 
 
 
