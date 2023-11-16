@@ -11,7 +11,8 @@ public class ReportGeneratorTest {
     @Test
     public void testGeneratePDF() throws IOException {
         String testFilePath = System.getProperty("user.dir") + File.separator 
-        + "src" + File.separator + "test" + File.separator + "resources";
+            + "src" + File.separator + "test" + File.separator + "resources" 
+            + "src" + File.separator + "test" + File.separator + "resources";
 
         ReportGenerator gen = new ReportGenerator(
             testFilePath,
