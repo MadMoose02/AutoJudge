@@ -40,16 +40,18 @@ public class ReportGenerator {
         this.contentStream.showText(studentName + " (" + studentID + ")");
     }
 
-    public void addEntryToReport(String feedbackComments, double score) throws IOException {
+    public void addEntryToReport(String feedbackComments) throws IOException {
         PDPage page = new PDPage();
         this.reportDocument.addPage(page);
         this.contentStream = new PDPageContentStream(this.reportDocument, page);
         this.addReportHeader(page, this.studentName, this.studentID);
         this.contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 14);
         this.contentStream.newLineAtOffset(0, -25);
-        this.contentStream.showText(feedbackComments);
-        this.contentStream.newLineAtOffset(0, -45);
-        this.contentStream.showText("Score: " + score + "%");
+        String[] lines = feedbackComments.split("\n");
+        for (String line : lines) {
+            this.contentStream.showText(line);
+            this.contentStream.newLineAtOffset(0, -15);
+        }
     }
     
     public void generateReport() throws IOException {

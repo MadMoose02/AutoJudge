@@ -78,9 +78,10 @@ public class HierarchyEvaluator implements SyntaxEvaluator {
         AbstractTestCollectionIterator iterator = this.testCollection.getIterator();
         while (iterator.hasNext()) {
             AbstractTestCase testCase = iterator.next();
-            try {this.score = (testCase.runTest()) ? 1.0 : 0.0;} 
-            catch (Exception e) {System.out.println("TEST CASE FAILED");}
-            
+            try { 
+                this.score = (testCase.runTest()) ? 1.0 : 0.0;
+                this.feedbackComments.append(testCase.getFeedbackComments()); 
+            } catch (Exception e) { System.out.println("\nTEST CASE FAILED"); }
         }
         return (double) this.score / (double) this.testCollection.size() * 100.0;
     }    

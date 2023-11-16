@@ -12,8 +12,9 @@ public class AutoJudgeSystem implements AutoJudge {
     private String resourcesPath;
     private String zippedSubmissionsFilename;
     private String reportDirectory;
+    private ReportGenerator reportGenerator;
     private HashMap<String, TreeMap<String, File>> submissions;
-    private HashMap<String, TreeMap<String, String>> submissionFeedback;
+    private TreeMap<String, String> submissionFeedback;
     private Evaluator evaluator;
     private SubmissionDecompressor submissionDecompressor;
     private double overallScore;
@@ -31,6 +32,7 @@ public class AutoJudgeSystem implements AutoJudge {
             this.resourcesPath + File.separator + this.zippedSubmissionsFilename
         );
         this.submissions = new HashMap<>();
+        this.submissionFeedback = new TreeMap<>();
         this.overallScore = 0.0;
     }
 
@@ -47,6 +49,7 @@ public class AutoJudgeSystem implements AutoJudge {
             this.resourcesPath + File.separator + this.zippedSubmissionsFilename
         );
         this.submissions = new HashMap<>();
+        this.submissionFeedback = new TreeMap<>();
         this.overallScore = 0.0;
     }
 
@@ -142,13 +145,22 @@ public class AutoJudgeSystem implements AutoJudge {
             System.out.println("=".repeat(80));
             
             // Run evaluation on each submission file
+            StringBuilder submissionFeedbackComments = new StringBuilder();
             for (String submissionFilename : submission.keySet()) {
                 this.evaluator = new Evaluator();
                 File submissionFile = submission.get(submissionFilename);
                 System.out.println("\n> Evaluating file: " + submissionFilename);
                 double score = this.evaluator.evaluate(submissionFile);
+                submissionFeedbackComments.append(
+                    "File: " + submissionFilename + "\n" +
+                    this.evaluator.getFeedbackComments() + "\n"
+                );
+                if (!submissionFilename.equals(submission.lastKey())) {
+                    submissionFeedbackComments.append("-".repeat(80) + "\n");
+                }
                 this.overallScore += score;
             }
+            this.submissionFeedback.put(submissionName, submissionFeedbackComments.toString());
             System.out.println("=".repeat(80) + "\n");    
         }
         System.out.println("Evaluation complete.");
@@ -157,14 +169,35 @@ public class AutoJudgeSystem implements AutoJudge {
 
     @Override
     public void generatePDFReport() {
-        System.out.println("Generating PDF report" + (this.submissions.size() > 1 ? "s" : "") + " ...");
-        System.out.print("Reports generated to " + this.reportDirectory + File.separator);
+        File directory = new File(this.reportDirectory);
+        if (!directory.exists()) directory.mkdir();
+        for (String submissionName : this.submissionFeedback.keySet()) {
+            int offset = this.zippedSubmissionsFilename.length() - 3;
+            String studentName = submissionName.substring(offset, submissionName.length() - (offset + 5));
+            String studentID = submissionName.split(studentName)[1].substring(1, 10);
+            System.out.println("Generating report for: " + studentName + " (" + studentID + ")");
+            this.reportGenerator = new ReportGenerator(this.reportDirectory, studentName, studentID);
+            try {
+                this.reportGenerator.addEntryToReport(this.submissionFeedback.get(submissionName));
+                this.reportGenerator.generateReport();
+            }
+            catch (Exception e) {
+                System.out.println("Unable to generate report for: " + studentName + " (" + studentID + ")");
+                e.printStackTrace();
+            }
+        }
     }
 
 
     @Override
     public void displayEvaluationResults() {
         System.out.println("\n\n<--- Evaluation Breakdown --->");
+        for (String submissionName : this.submissionFeedback.keySet()) {
+            System.out.println("=".repeat(80));
+            System.out.println(" Submission: " + submissionName);
+            System.out.println("=".repeat(80));
+            System.out.println(this.submissionFeedback.get(submissionName));
+        }
         System.out.println("Overall score: " + this.overallScore + "%");
     }
 }
