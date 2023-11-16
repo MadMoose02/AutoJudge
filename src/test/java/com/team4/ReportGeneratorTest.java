@@ -1,14 +1,12 @@
 package com.team4;
 
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 
 public class ReportGeneratorTest {
@@ -17,12 +15,15 @@ public class ReportGeneratorTest {
     public void testGeneratePDF() throws IOException {
         String testFilePath = System.getProperty("user.dir") + File.separator 
             + "src" + File.separator + "test" + File.separator + "resources" 
-            + File.separator + "TestReport.pdf";
-        File testFile = new File(testFilePath);
-        if (testFile.exists()) testFile.delete();
-        PDDocument doc = new PDDocument();
-        PDPage page = new PDPage();
-        doc.addPage(page);
+            + "src" + File.separator + "test" + File.separator + "resources";
+
+        ReportGenerator gen = new ReportGenerator(
+            testFilePath,
+            "John Doe", 
+            "123456789"
+        );
+        gen.addEntryToReport("This is a test feedback entry", 100.0);
+        gen.generateReport();
 
         PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
@@ -36,13 +37,6 @@ public class ReportGeneratorTest {
 
             contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
             contentStream.showText("This is a sample report generation");
-            contentStream.newLineAtOffset(0, -25);
-
-            // Add a section for each assignment component
-            displayGradeSection(contentStream, "Code Style", 90);
-            displayGradeSection(contentStream, "Functionality", 85);
-            displayGradeSection(contentStream, "Documentation", 95);
-
             contentStream.endText();
             contentStream.close();
         } catch (Exception e) {
@@ -55,11 +49,4 @@ public class ReportGeneratorTest {
         System.out.println("PDF saved to: " + testFilePath);
         doc.close();
     }
-
-    private void displayGradeSection(PDPageContentStream contentStream, String sectionName, int grade) throws IOException {
-        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER_BOLD), 14);
-        contentStream.newLineAtOffset(0, -25);
-        contentStream.showText(sectionName + ": " + grade);
-}
-
 }

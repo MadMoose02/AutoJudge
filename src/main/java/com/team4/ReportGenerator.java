@@ -1,5 +1,6 @@
 package com.team4;
 
+
 import java.io.File;
 import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -9,55 +10,54 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 public class ReportGenerator {
+    
+    // Attributes
+    private String reportFilename;
+    private String reportPath;
+    private String studentName;
+    private String studentID;
+    private PDDocument reportDocument;
+    private PDPageContentStream contentStream;
 
-    public void generateReport(double overallScore) throws IOException {
-        // Set the file path
-        String filePath = "C:\\Users\\josiah tenia\\Desktop\\AutoJudge\\src\\test\\resources\\generatedTest.pdf";
+    /**
+     * Default constructor
+     */
+    public ReportGenerator(String reportDirectory, String studentName, String studentID) {
+        this.reportFilename = new String(
+            studentName.replace(" ", "_") + "_" + studentID + "_EvalReport" + ".pdf");
+        this.reportPath = reportDirectory + File.separator + reportFilename;
+        this.reportDocument = new PDDocument();
+        this.studentName = studentName;
+        this.studentID = studentID;
 
-        // Check and delete an existing file
-        File testFile = new File(filePath);
-        if (testFile.exists()) {
-            testFile.delete();
-        }
+        File testFile = new File(reportPath);
+        if (testFile.exists()) testFile.delete();
+    }
 
-        // Create the PDF document
-        PDDocument doc = new PDDocument();
+    public void addReportHeader(PDPage page, String studentName, String studentID) throws IOException {
+        this.contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD), 20);
+        this.contentStream.beginText();
+        this.contentStream.newLineAtOffset(25, 725);
+        this.contentStream.showText(studentName + " (" + studentID + ")");
+    }
+
+    public void addEntryToReport(String feedbackComments, double score) throws IOException {
         PDPage page = new PDPage();
-        doc.addPage(page);
-
-        // Create the content stream
-        PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-
-        // Set the font and other styling
-        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD), 18);
-
-        try {
-            contentStream.beginText();
-            contentStream.newLineAtOffset(25, 725);
-            contentStream.showText("AutoJudge Sample Report");
-            contentStream.newLineAtOffset(0, -25);
-
-            contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
-            contentStream.showText("This is a sample report generation");
-            contentStream.newLineAtOffset(0, -25);
-
-            // Add a section for overall score
-            contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER_BOLD), 14);
-            contentStream.newLineAtOffset(0, -25);
-            contentStream.showText("Overall Score: " + overallScore + "%");
-
-            // Your other report content...
-
-            contentStream.endText();
-            contentStream.close();
-        } catch (Exception e) {
-            System.out.println("Unable to write to PDF");
-            e.printStackTrace();
-        }
-
-        // Save the document
-        doc.save(filePath);
-        System.out.println("PDF saved to: " + filePath);
-        doc.close();
+        this.reportDocument.addPage(page);
+        this.contentStream = new PDPageContentStream(this.reportDocument, page);
+        this.addReportHeader(page, this.studentName, this.studentID);
+        this.contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 14);
+        this.contentStream.newLineAtOffset(0, -25);
+        this.contentStream.showText(feedbackComments);
+        this.contentStream.newLineAtOffset(0, -45);
+        this.contentStream.showText("Score: " + score + "%");
+    }
+    
+    public void generateReport() throws IOException {
+        this.contentStream.endText();
+        this.contentStream.close();
+        this.reportDocument.save(this.reportPath);
+        System.out.println("PDF saved to: " + this.reportPath);
+        this.reportDocument.close();
     }
 }
