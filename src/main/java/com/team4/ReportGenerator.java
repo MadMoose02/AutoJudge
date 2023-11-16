@@ -34,7 +34,7 @@ public class ReportGenerator {
     }
 
     public void addReportHeader(PDPage page, String studentName, String studentID) throws IOException {
-        this.contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD), 20);
+        this.contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_BOLD), 14);
         this.contentStream.beginText();
         this.contentStream.newLineAtOffset(25, 725);
         this.contentStream.showText(studentName + " (" + studentID + ")");
@@ -45,7 +45,7 @@ public class ReportGenerator {
         this.reportDocument.addPage(page);
         this.contentStream = new PDPageContentStream(this.reportDocument, page);
         this.addReportHeader(page, this.studentName, this.studentID);
-        this.contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 14);
+        this.contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 10);
         this.contentStream.newLineAtOffset(0, -25);
         String[] lines = feedbackComments.split("\n");
         for (String line : lines) {
