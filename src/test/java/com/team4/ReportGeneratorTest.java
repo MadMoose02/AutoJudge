@@ -36,6 +36,13 @@ public class ReportGeneratorTest {
 
             contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
             contentStream.showText("This is a sample report generation");
+            contentStream.newLineAtOffset(0, -25);
+
+            // Add a section for each assignment component
+            displayGradeSection(contentStream, "Code Style", 90);
+            displayGradeSection(contentStream, "Functionality", 85);
+            displayGradeSection(contentStream, "Documentation", 95);
+
             contentStream.endText();
             contentStream.close();
         } catch (Exception e) {
@@ -48,4 +55,11 @@ public class ReportGeneratorTest {
         System.out.println("PDF saved to: " + testFilePath);
         doc.close();
     }
+
+    private void displayGradeSection(PDPageContentStream contentStream, String sectionName, int grade) throws IOException {
+        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER_BOLD), 14);
+        contentStream.newLineAtOffset(0, -25);
+        contentStream.showText(sectionName + ": " + grade);
+}
+
 }

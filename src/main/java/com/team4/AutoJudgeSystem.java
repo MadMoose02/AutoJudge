@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import com.team4.Evaluator.Evaluator;
+import java.io.IOException;
 
 public class AutoJudgeSystem implements AutoJudge {
 
@@ -158,6 +159,15 @@ public class AutoJudgeSystem implements AutoJudge {
     @Override
     public void generatePDFReport() {
         System.out.println("Generating PDF report" + (this.submissions.size() > 1 ? "s" : "") + " ...");
+        
+        // Call the PDF generator with the overallScore
+        ReportGenerator pdfGenerator = new ReportGenerator();
+        try {
+            pdfGenerator.generateReport(this.overallScore);
+        } catch (IOException e) {
+            System.out.println("Error generating PDF report: " + e.getMessage());
+        }
+        
         System.out.print("Reports generated to " + this.reportDirectory + File.separator);
     }
 
@@ -165,6 +175,11 @@ public class AutoJudgeSystem implements AutoJudge {
     @Override
     public void displayEvaluationResults() {
         System.out.println("\n\n<--- Evaluation Breakdown --->");
-        System.out.println("Overall score: " + this.overallScore + "%");
+        System.out.println("Overall score: " + this.overallScore);
     }
+
+    public double getOverallScore() {
+        return this.overallScore;
+    }
+    
 }
