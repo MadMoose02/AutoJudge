@@ -69,13 +69,12 @@ public class AssociationHierarchyEvaluator extends TestCase {
     public boolean testCriteria() throws Exception {
         boolean status = false;
 
+        this.feedbackCommentSB.append("Association check: " + (status ? "Passed" : "Failed") + "\n");
         if (!(status = this.associationCheck())) {
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
         }
         if (status) this.numTestsPassed++;
-        System.out.println("Association check: " + (status ? "Passed" : "Failed"));
-        
         return (this.numTestsPassed == 1);
     }
 }
