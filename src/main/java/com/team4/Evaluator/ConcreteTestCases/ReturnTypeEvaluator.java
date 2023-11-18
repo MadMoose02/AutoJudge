@@ -60,6 +60,10 @@ public class ReturnTypeEvaluator extends TestCase {
         return false;
     }
 
+
+    /**
+     * Finds the location of the return type of the method being evaluated within the submission file.
+     */
     private void locateEvalMethodReturnType() {
         String[] methodSignature = this.evalMethodSignature.replace("static", "").split(" ");
         if (methodSignature[0].trim().equals(this.testFile.getName().replace(".java", ""))) {
