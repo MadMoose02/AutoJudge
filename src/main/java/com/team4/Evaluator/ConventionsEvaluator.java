@@ -242,9 +242,9 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     }
 
     /**
-     * 
-     * @param line
-     * @return
+     * Checks if a method is valid String by String.
+     * @param line Takes in a line which contains method signature.
+     * @return True if method is valid, False otherwise.
      */
     private  boolean validMethod (String line ){
 
