@@ -7,36 +7,12 @@ import java.util.Scanner;
 public class ConventionsEvaluator implements SyntaxEvaluator {
     
     private double score; // store the items in the java file in these , attributes 
-    // private String filename;
-    // private String className;
-    // private String constructorName;
-    // private String FligthNoAttribute ; 
-    // private String passportNumberAttribute ; 
-    // private String firstNameAttribute ; 
-    // private String lastNameAttribute ; 
-    // private String numLuggageAttribute ; 
-    // private String cabinClassAttribute ; 
-
-    // private String methodName;
-    // private boolean correctSignature;
-   
-
-
-    // which class analyszes the java doc 
-    // each attribute is checked for syntax and naming convention
-    // we pull from file opened and store in attributes 
-
-
-    //make a function combining syntax and camel case together 
-
-
-
 
     /**
      * 
      * Returns whether parameter follows camelCase format 
      * @param Name the name of the Attribute or method Name 
-     * @return returns whether the parameter is CamelCase or not 
+     * @return returns true if parameter is camelCase , false otherwise 
      */
     private boolean isCamelCase(String Name  ){
 
@@ -59,6 +35,12 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+
+    /**
+     * intakes a parameter to determine if it is a validDataType 
+     * @param dataType takes in a String that contains a datatype
+     * @return returns true , if the parameter is a valid java datatype , false otherwise 
+     */
     private boolean validDataTypes ( String dataType){
 
         if(dataType.equals("int")||dataType.equals("String")||dataType.equals("boolean")||
@@ -74,6 +56,12 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+    /**
+     * Determines if the AccessModifier provided is valid 
+     * @param AccessModifier takes in a string , that is a accessModifier 
+     * @return true , if the accessModifier is valid in the java language , false otherwise
+     */
+
     private boolean validAccessModifier ( String AccessModifier){
 
         if(AccessModifier.equals("private")||AccessModifier.equals("public")||AccessModifier.equals("protected")){
@@ -83,6 +71,13 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false ; 
 
     }
+
+
+    /**
+     * determines whether a
+     * @param AttributeLine is String array that contians the entire line to declare an attribute Eg private String name 
+     * @return 
+     */
 
     private boolean valid3wordAttributeDeclaration ( String AttributeLine[] ){
 
