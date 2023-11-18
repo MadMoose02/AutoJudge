@@ -259,18 +259,6 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return true  ; 
     }
     
-/*
- * Read line until consturctor , to run the attribute checks eval the constructor,
- * 
- * After constructor then eval methods
- * After return that is when we can start
- * 
- * Assume constructor needs to be written
- * 
- * ! Once line is processed , we generate a result on that 
- * ! if it didnt pass then
- */
-
     @Override
     public double evaluate(File javaDocument) {
         String Filename = javaDocument.getName() ; 
