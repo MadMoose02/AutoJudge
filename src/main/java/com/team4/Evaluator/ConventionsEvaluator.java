@@ -74,9 +74,9 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
 
     /**
-     * determines whether a
-     * @param AttributeLine is String array that contians the entire line to declare an attribute Eg private String name 
-     * @return 
+     * determines whether a attribute declaration with 3 words is valid 
+     * @param AttributeLine is String array that contains the entire line to declare an attribute Eg private String name 
+     * @return true , if the 3 words in the attribute decalration are correct to java langauge ,fasle otherwise
      */
 
     private boolean valid3wordAttributeDeclaration ( String AttributeLine[] ){
@@ -90,6 +90,12 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+    /**
+     * determines whether a attribute declaration with 4 words is valid ,  Eg private static String name
+     * @param AttributeLine is String array that contains the entire line to declare an attribute
+     * @return true , if the 4 word declaration is correct to the java language , false otherwise 
+     */
+
     private boolean valid4WordAttributeDeclaration ( String AttributeLine[] ){
 
         if (validAccessModifier(AttributeLine[0]) && AttributeLine[1].equals("static") && validDataTypes(AttributeLine[2]) && isCamelCase(AttributeLine[3])) {
@@ -100,7 +106,12 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false ; 
     }
 
-    //Take in line , or // take in parameters 
+    
+    /**
+     * Checks for a valid attribute declaration line that follows the java syntax 
+     * @param AttributeLine String that contains the attribute declaration line
+     * @return true , if attribute declaration is valid with java syntax , false otherwise 
+     */
     private boolean AttributeSyntaxCheck ( String AttributeLine ){ 
 
         String[] attributeDeclaration = AttributeLine.split(" "); 
@@ -122,7 +133,6 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false ; 
     }
 
-    // !If syntax , does not match up with required doc then fail 
 
     public boolean MethodCompare ( String expectedReturnType , String actualReturnType ){
         return expectedReturnType.equals(actualReturnType); 
