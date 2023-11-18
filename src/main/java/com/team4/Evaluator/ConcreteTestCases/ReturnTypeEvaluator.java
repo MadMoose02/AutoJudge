@@ -29,6 +29,10 @@ public class ReturnTypeEvaluator extends TestCase {
     // Methods
 
 
+    /**
+     * Finds the location of the method being evaluated within the submission file
+     * @return True if the evaluating method is found in the submission file, False otherwise
+     */
     private boolean locateEvalMethod(){
         String line = "";
 
