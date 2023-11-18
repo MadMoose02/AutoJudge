@@ -3,7 +3,10 @@ package com.team4.Evaluator;
 import java.io.File;
 import java.util.Scanner;
 
-
+/**
+ * performs checks to ensure that code read from the file follows java syntax 
+ * 
+ */
 public class ConventionsEvaluator implements SyntaxEvaluator {
     
     private double score; // store the items in the java file in these , attributes 
@@ -287,6 +290,9 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return true  ; 
     }
     
+
+
+  
     @Override
     public double evaluate(File javaDocument) {
         String Filename = javaDocument.getName() ; 
