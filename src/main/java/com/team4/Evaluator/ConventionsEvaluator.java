@@ -196,6 +196,14 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+    
+
+    /**
+     * this checks the line that declares the class to determine if it is valid with the java syntax 
+     * @param ClassName this is a string that contains the entire line of the class decalration 
+     * @param filename this is a string that contains the name of file being processed 
+     * @return true if the class declaration is valid with java syntax , false otherwise
+     */
     private boolean checkClassLabel ( String ClassName , String filename  ){
        
         String classLabelLine[] = ClassName.split(" "); 
