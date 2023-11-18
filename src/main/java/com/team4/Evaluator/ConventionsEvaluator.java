@@ -230,12 +230,22 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false ; 
     }
 
+    /**
+     * Checks if a word either a datatype, access modifier, camel case or contains a " , ".
+     * @param word Takes in a word.
+     * @return True if word is valid, False if otherwise.
+     */
     private boolean validWordOrSyntax ( String word){
 
         return (validDataTypes(word)||validAccessModifier(word)||isCamelCase(word)||word.contains(",") );  
 
     }
 
+    /**
+     * 
+     * @param line
+     * @return
+     */
     private  boolean validMethod (String line ){
 
         String [] methodSplit = line.split("[ )(]+"); 
