@@ -140,6 +140,12 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     }
 
 
+    /**
+     * Checks if 3 word class Declration is valid with java syntax
+     * @param classLabelLine , a string array that contains the line that declares the class
+     * @param filename , a string that indicates the name of the file that is being processed
+     * @return true , if the class declaration conforms with java sytax , false otherwise
+     */
 
     private boolean valid3wordClassLabel ( String [] classLabelLine , String filename ){
 
@@ -152,6 +158,13 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+
+    /**
+     * checks if 4 word class declaration is valid with java syntax 
+     * @param classLabelLine  a string array that contains the line that declares the class
+     * @param filename a string that indicates the name of the file that is being processed
+     * @return true , if the class declaration conforms with java sytax , false otherwise
+     */
     private boolean valid4wordClassLabel (String [] classLabelLine , String filename){
 
          if( validAccessModifier(classLabelLine[0]) && (classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class")
@@ -164,11 +177,18 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
     }
 
+    /**
+     * checks if 6 word class declaration is valid with java syntax
+     * @param classLabelLine a string array that contains the line that declares the class
+     * @param filename a string that indicates the name of the file that is being processed
+     * @return true , if the class declaration conforms with java sytax , false otherwise
+     */
+
     private boolean valid6wordClassLabel (String [] classLabelLine , String filename){
 
         if(validAccessModifier(classLabelLine[0]) &&(classLabelLine[1].equals("final") ||classLabelLine[1].equals("abstract"))  && classLabelLine[2].equals("class") && 
             classLabelLine[3].equals(filename) &&(classLabelLine[4].equals("implements") || (classLabelLine[4].equals("extends")))){
-                //implement a class checker 
+            
                 return true ; 
              }
 
