@@ -30,6 +30,11 @@ public class CallbackEvaluator extends TestCase {
 
     // Methods
 
+    /**
+     * This method extracts the method body of the contructor from the submission file 
+     * and trims each line into one  single String. 
+     * @throws Exception Throws exception if unable to extract from file.
+     */
     private void extractMethodBody() throws Exception {
         int iter = 0;
         String line = "";

@@ -29,6 +29,10 @@ public class ReturnTypeEvaluator extends TestCase {
     // Methods
 
 
+    /**
+     * Finds the location of the method being evaluated within the submission file
+     * @return True if the evaluating method is found in the submission file, False otherwise
+     */
     private boolean locateEvalMethod(){
         String line = "";
 
@@ -56,6 +60,10 @@ public class ReturnTypeEvaluator extends TestCase {
         return false;
     }
 
+
+    /**
+     * Finds the location of the return type of the method being evaluated within the submission file.
+     */
     private void locateEvalMethodReturnType() {
         String[] methodSignature = this.evalMethodSignature.replace("static", "").split(" ");
         if (methodSignature[0].trim().equals(this.testFile.getName().replace(".java", ""))) {

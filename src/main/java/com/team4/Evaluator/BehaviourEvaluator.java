@@ -36,6 +36,10 @@ public class BehaviourEvaluator implements SyntaxEvaluator {
 
     // Methods
 
+    /**
+     * Sets the evaluation parameters to pass to the individual test cases
+     * @param rubric The file for which the parameters are being extracted
+     */
     private void setEvaluationConfig(File rubric) {
         if (rubric == null) return;
 
