@@ -202,7 +202,7 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         else 
         return false; 
     }
-    
+
     /**
      * Checks if a constructor is present.
      * @param fileName Takes in the the name of file.
@@ -217,8 +217,13 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         return false ; 
     }
 
-    //Valid method declaration
-
+    /**
+     * Checks if the method signature is valid.
+     * @param AccessModifier Takes an access modifier.
+     * @param type Takes a valid datatype. 
+     * @param Name Takes in a method name.
+     * @return True if method syntax is valid, False if otherwise.
+     */
     private boolean validMethodSyntax ( String AccessModifier , String type , String Name  ){
         //! can takle off 
         if(validAccessModifier(AccessModifier) && validDataTypes(type) && isCamelCase(Name)){
