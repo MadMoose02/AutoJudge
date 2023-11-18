@@ -8,6 +8,12 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     
     private double score; // store the items in the java file in these , attributes 
 
+    
+    public ConventionsEvaluator() {
+        this.score = 0.0;
+    }
+
+
     /**
      * 
      * Returns whether parameter follows camelCase format 
@@ -134,15 +140,6 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     }
 
 
-    public boolean MethodCompare ( String expectedReturnType , String actualReturnType ){
-        return expectedReturnType.equals(actualReturnType); 
-    }
-
-    public ConventionsEvaluator() {
-        this.score = 0.0;
-    }
-
-    // !How do we know when the attribtues are done then move to constructor 
 
     private boolean valid3wordClassLabel ( String [] classLabelLine , String filename ){
 
