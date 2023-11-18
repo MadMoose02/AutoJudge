@@ -193,7 +193,6 @@ public class AutoJudgeSystem implements AutoJudge {
     @Override
     public void displayEvaluationResults() {
         System.out.println("\n\n<--- Evaluation Breakdown --->");
-<<<<<<< HEAD
         for (String submissionName : this.submissionFeedback.keySet()) {
             System.out.println("=".repeat(80));
             System.out.println(" Submission: " + submissionName);
@@ -201,9 +200,6 @@ public class AutoJudgeSystem implements AutoJudge {
             System.out.println(this.submissionFeedback.get(submissionName));
         }
         System.out.println("Overall score: " + this.overallScore + "%");
-=======
-        System.out.println("Overall score: " + this.overallScore);
->>>>>>> e95c3296ec244cbf7086c66e5e6f9f59b2934b3a
     }
 
     public double getOverallScore() {
