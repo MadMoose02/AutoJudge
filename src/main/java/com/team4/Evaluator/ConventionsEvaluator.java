@@ -202,7 +202,13 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
         else 
         return false; 
     }
-
+    
+    /**
+     * Checks if a constructor is present.
+     * @param fileName Takes in the the name of file.
+     * @param line Takes in a line which contains method signature of constructor.
+     * @return True if detects constructor, False if otherwise.
+     */
     private boolean detectConstructor ( String  fileName , String line){
 
         if(line.contains(fileName) && line.contains("(") && line.contains(")")){
