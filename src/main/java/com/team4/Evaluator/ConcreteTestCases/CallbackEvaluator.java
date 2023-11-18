@@ -8,7 +8,7 @@ import com.team4.Evaluator.TestCase.TestCase;
 
 /**
  * This is a concrete class which is a subclass of the abstract class TestCase.
- * It contains a constructor which in initialise attributes based on parameters given.
+ * It contains a constructor which in initialise attributes based on parameters given as well as a StringBuilder.
  * This class has a unique method which extracts the method body of the constrctor of a given submission file.
  * Finally it overrides a class that was inherited by TestCase. 
  */

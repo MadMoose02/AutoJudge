@@ -4,7 +4,12 @@ import java.io.File;
 import java.util.Scanner;
 
 import com.team4.Evaluator.TestCase.TestCase;
-
+/**
+ * This is a concrete class which is a subclass of the abstract class TestCase.
+ * It contains a constructor which in initialise attributes based on parameters given as well as a StringBuilder.
+ * This class has its unique methods which locates a method being evaluated as well as its return type of the given submission file.
+ * Finally it overrides a class that was inherited by TestCase. 
+ */
 public class ReturnTypeEvaluator extends TestCase {
 
     private StringBuilder feedbackCommentSB;
