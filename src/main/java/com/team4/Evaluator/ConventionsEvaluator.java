@@ -28,6 +28,16 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
 
 
     //make a function combining syntax and camel case together 
+
+
+
+
+    /**
+     * 
+     * Returns whether parameter follows camelCase format 
+     * @param Name the name of the Attribute or method Name 
+     * @return returns whether the parameter is CamelCase or not 
+     */
     private boolean isCamelCase(String Name  ){
 
         if( Name == null || Name.isEmpty() || !Name.matches(".*[A-Z].*")){
