@@ -86,6 +86,14 @@ public class AutoJudgeSystem implements AutoJudge {
         if (!path.endsWith(File.separator)) path += File.separator;
         this.resourcesPath = path;
     }
+    
+    /**
+     * Returns the overall score for a submission
+     * @return Double value of the overall score for a submission
+     */
+    public double getOverallScore() {
+        return this.overallScore;
+    }
 
 
     // Methods
