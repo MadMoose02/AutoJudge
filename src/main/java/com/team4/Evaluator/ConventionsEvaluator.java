@@ -11,7 +11,9 @@ public class ConventionsEvaluator implements SyntaxEvaluator {
     
     private double score; // store the items in the java file in these , attributes 
 
-    
+    /**
+     * Default constructor for a ConventionsEvaluator object
+     */
     public ConventionsEvaluator() {
         this.score = 0.0;
     }

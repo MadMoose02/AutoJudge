@@ -7,22 +7,42 @@ import java.util.Scanner;
 
 import com.team4.Evaluator.TestCase.TestCase;
 
+/**
+ * A concrete subclass of the TestCase class that evaluates the constructor of a class.
+ * It checks if the constructor has the correct parameters and if it assigns the correct
+ * values to the instance attributes of the class
+ */
 public class ConstructorBehaviourEvaluator extends TestCase {
 
+    /** The extracted method body of the constructor */
     private String methodBody;
-    private String evalClassName;
-    private ArrayList<String> evalParameters;
-    private ArrayList<String> instanceAttributes;
-    private ArrayList<String> classAttributes;
-    private StringBuilder feedbackCommentSB;
-    private String failureMsg;
-    private int numTestsPassed = 0;
 
+    /** The name of the class being evaluated */
+    private String evalClassName;
+
+    /** The parameters of the constructor being evaluated */
+    private ArrayList<String> evalParameters;
+
+    /** The instance attributes of the class being evaluated */
+    private ArrayList<String> instanceAttributes;
+
+    /** The class attributes of the class being evaluated */
+    private ArrayList<String> classAttributes;
+
+    /** The StringBuilder to generate feedback comments for the submission File */
+    private StringBuilder feedbackCommentSB;
+
+    /** The failure message to be displayed if the test case fails */
+    private String failureMsg;
+
+    /** The number of test cases passed */
+    private int numTestsPassed = 0;
 
     /**
      * Creates a test case to evaluate the constructor of a class.
-     * @param testName Name of the test case
-     * @param testFile File to be evaluated
+     * 
+     * @param testName   Name of the test case
+     * @param testFile   File to be evaluated
      * @param parameters Expected parameters of the constructor
      */
     public ConstructorBehaviourEvaluator(String testName, File testFile, String[] parameters) {
@@ -33,15 +53,16 @@ public class ConstructorBehaviourEvaluator extends TestCase {
 
     /**
      * Creates a test case to evaluate the constructor of a class.
-     * @param testName Name of the test case
-     * @param testFile File to be evaluated
-     * @param parameters Expected parameters of the constructor
+     * 
+     * @param testName           Name of the test case
+     * @param testFile           File to be evaluated
+     * @param parameters         Expected parameters of the constructor
      * @param instanceAttributes Expected attributes to be initialised by the constructor
      */
-    public ConstructorBehaviourEvaluator(String testName, 
-                                        File testFile, 
-                                        String[] parameters, 
-                                        String[] instanceAttributes) {
+    public ConstructorBehaviourEvaluator(String testName,
+            File testFile,
+            String[] parameters,
+            String[] instanceAttributes) {
         super(testName, testFile, parameters);
         this.evalClassName = testFile.getName().substring(0, testFile.getName().indexOf("."));
         this.instanceAttributes = (instanceAttributes != null) ? new ArrayList<>(List.of(instanceAttributes)) : null;
@@ -50,17 +71,19 @@ public class ConstructorBehaviourEvaluator extends TestCase {
 
     /**
      * Creates a test case to evaluate the constructor of a class.
-     * @param testName Name of the test case
-     * @param testFile File to be evaluated
-     * @param parameters Expected parameters of the constructor
+     * 
+     * @param testName           Name of the test case
+     * @param testFile           File to be evaluated
+     * @param parameters         Expected parameters of the constructor
      * @param instanceAttributes Expected attributes to be initialised by the constructor
-     * @param classAttributes Class attributes that are not expected to be initialised by the constructor
+     * @param classAttributes    Class attributes that are not expected to be initialised by 
+     *                           the constructor
      */
-    public ConstructorBehaviourEvaluator(String testName, 
-                                        File testFile, 
-                                        String[] parameters, 
-                                        String[] instanceAttributes,
-                                        String[] classAttributes) {
+    public ConstructorBehaviourEvaluator(String testName,
+            File testFile,
+            String[] parameters,
+            String[] instanceAttributes,
+            String[] classAttributes) {
         super(testName, testFile, parameters);
         this.evalClassName = testFile.getName().substring(0, testFile.getName().indexOf("."));
         this.instanceAttributes = (instanceAttributes != null) ? new ArrayList<>(List.of(instanceAttributes)) : null;
@@ -68,10 +91,12 @@ public class ConstructorBehaviourEvaluator extends TestCase {
         this.feedbackCommentSB = new StringBuilder();
     }
 
-
     // Methods
 
-
+    /**
+     * Locates and extracts the constructor within the submission File
+     * @throws Exception If the File cannot be read or the constructor cannot be found
+     */
     private void extractConstructorBody() throws Exception {
         int iter = 0;
         String line = "";
@@ -89,12 +114,12 @@ public class ConstructorBehaviourEvaluator extends TestCase {
 
                 // Check if constructor is present
                 if (line.contains(this.evalClassName) && line.contains("(")) {
-                    while (!line.contains("}")){
+                    while (!line.contains("}")) {
                         methodBodyLines.add(line);
                         line = scan.nextLine();
                     }
                     methodBodyLines.add(line);
-                
+
                 } else { continue; }
 
                 // Concatenate method body lines
@@ -106,25 +131,32 @@ public class ConstructorBehaviourEvaluator extends TestCase {
             }
 
         } catch (Exception e) {
-            System.out.println("Unable to extract constructor body from file: " + this.testFile.getName()); 
-            e.printStackTrace(); 
+            System.out.println("Unable to extract constructor body from file: " + this.testFile.getName());
+            e.printStackTrace();
         }
     }
 
-    
+    /**
+     * Checks the constructor parameters and returns a boolean value indicating whether 
+     * they are valid.
+     * @return  {@code True} if the constructor parameters are valid, {@code False} otherwise
+     */
     private boolean checkConstructorParameters() {
         String methodParams = this.methodBody.substring(this.methodBody.indexOf("(") + 1, methodBody.indexOf(")"));
         String[] rawParamsList = methodParams.split(",");
         this.evalParameters = new ArrayList<>();
-        for (String each : rawParamsList) 
-            if ((each.length() > 1) && (!each.equals(" "))) this.evalParameters.add(each.trim());
-        
+        for (String each : rawParamsList)
+            if ((each.length() > 1) && (!each.equals(" ")))
+                this.evalParameters.add(each.trim());
+
         // If no parameters are expected, check if constructor has no parameters
-        if ((this.parameters.isEmpty()) && (this.evalParameters.isEmpty())) return true;
+        if ((this.parameters.isEmpty()) && (this.evalParameters.isEmpty()))
+            return true;
 
         if ((this.parameters.isEmpty()) && (!this.evalParameters.isEmpty())) {
             this.failureMsg = "\n  Expected no parameters, but found: ";
-            for (String each : this.evalParameters) this.failureMsg += each + "; ";
+            for (String each : this.evalParameters)
+                this.failureMsg += each + "; ";
             return false;
         }
 
@@ -132,20 +164,29 @@ public class ConstructorBehaviourEvaluator extends TestCase {
         if (!this.evalParameters.containsAll(this.parameters)) {
             this.failureMsg = "\n  Missing parameters: ";
             for (String each : this.parameters) {
-                if (!this.evalParameters.contains(each)) this.failureMsg += each + "; ";
+                if (!this.evalParameters.contains(each))
+                    this.failureMsg += each + "; ";
             }
         }
 
         return this.evalParameters.containsAll(this.parameters);
     }
 
-
+    /**
+     * Checks the attribute assignment in the method body and returns true if all 
+     * attribute assignments are valid. It removes lines that do not assign values 
+     * to attributes, skips any class attribute references and enumerates attribute 
+     * assignments from parameters. It also checks for unchecked assignments based 
+     * on the attribute type.
+     * @return  {@code True} if all attribute assignments are valid, {@code False} otherwise
+     */
     private boolean checkAttributeAssignment() {
-        String methodBody = this.methodBody.substring(this.methodBody.indexOf("{") + 1, this.methodBody.lastIndexOf("}"));
+        String methodBody = this.methodBody.substring(this.methodBody.indexOf("{") + 1,
+                this.methodBody.lastIndexOf("}"));
         String[] methodBodyLines = methodBody.split(";");
         ArrayList<String> attributeAssignments = new ArrayList<>(List.of(methodBodyLines));
         ArrayList<String> checkedAttributes = new ArrayList<>();
-        
+
         // Remove lines that do not assign values to attributes (class variable manipulation)
         if (this.classAttributes != null) {
             for (String each: this.classAttributes) {
@@ -173,7 +214,7 @@ public class ConstructorBehaviourEvaluator extends TestCase {
         }
         for (String each : checkedAttributes) attributeAssignments.remove(each);
         checkedAttributes.clear();
-        
+
         // For unchecked assignments
         for (String each : attributeAssignments) {
             String attrValue = each.substring(each.indexOf("=") + 1).trim();
@@ -183,19 +224,20 @@ public class ConstructorBehaviourEvaluator extends TestCase {
                 checkedAttributes.add(each);
                 continue;
             }
-            
+
             if (this.instanceAttributes == null) continue;
             for (String attr: this.instanceAttributes) {
                 String attrType = attr.split(" ")[0].trim();
 
                 // If attr has a Type<T> declaration
-                if (attrType.contains("<")) attrType = attrType.substring(0, attr.indexOf("<")).trim();
-                
+                if (attrType.contains("<"))
+                    attrType = attrType.substring(0, attr.indexOf("<")).trim();
+
                 if (attrValue.contains("new") && attrValue.contains(attrType)) {
                     checkedAttributes.add(each);
                     break;
                 }
-                
+
                 if (attrType.equals("String")) {
                     if (attrValue.contains("\"") || attrValue.contains("'")) {
                         checkedAttributes.add(each);
@@ -209,7 +251,7 @@ public class ConstructorBehaviourEvaluator extends TestCase {
                         break;
                     }
                 }
-                
+
                 if (attrType.equals("boolean")) {
                     if (attrValue.equals("true") || attrValue.equals("false")) {
                         checkedAttributes.add(each);
@@ -218,10 +260,11 @@ public class ConstructorBehaviourEvaluator extends TestCase {
                 }
             }
         }
-        for (String each : checkedAttributes) attributeAssignments.remove(each);
+        for (String each: checkedAttributes) attributeAssignments.remove(each);
         if (!attributeAssignments.isEmpty()) {
             this.failureMsg = "\n  Unrecognised attribute assignments: ";
-            for (String each : attributeAssignments) this.failureMsg += each + "; ";
+            for (String each : attributeAssignments)
+                this.failureMsg += each + "; ";
         }
 
         return attributeAssignments.isEmpty();
@@ -240,11 +283,14 @@ public class ConstructorBehaviourEvaluator extends TestCase {
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
         }
-        if (status) this.numTestsPassed++;
-        
+        if (status)
+            this.numTestsPassed++;
+
         // Sub test case 2: Check if constructor assigns correct values to attributes
-        ArrayList<String> expectedAttributes = (this.parameters != null) ? new ArrayList<>(this.parameters) : new ArrayList<>();
-        if (this.instanceAttributes != null) expectedAttributes.addAll(this.instanceAttributes);
+        ArrayList<String> expectedAttributes = (this.parameters != null) ? new ArrayList<>(this.parameters)
+                : new ArrayList<>();
+        if (this.instanceAttributes != null)
+            expectedAttributes.addAll(this.instanceAttributes);
         status = this.checkAttributeAssignment();
         this.feedbackCommentSB.append("Assignment check: " + (status ? "Passed" : "Failed") + "\n");
         if (!status) {
@@ -252,7 +298,8 @@ public class ConstructorBehaviourEvaluator extends TestCase {
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
         }
-        if (status) this.numTestsPassed++;
+        if (status)
+            this.numTestsPassed++;
         this.feedbackComments = this.feedbackCommentSB.toString();
         return (this.numTestsPassed == 2);
     }

@@ -5,25 +5,42 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import com.team4.Evaluator.Evaluator;
-import java.io.IOException;
 
 public class AutoJudgeSystem implements AutoJudge {
 
     // Attributes
+
+    /** Absolute path to the resources directory */
     private String resourcesPath;
+
+    /** Name of the zipped submissions file */
     private String zippedSubmissionsFilename;
+
+    /** Absolute path to the directory for storing the generated PDF reports */
     private String reportDirectory;
+
+    /** ReportGenerator object for generating PDF reports */
     private ReportGenerator reportGenerator;
+
+    /** HashMap of the submissions File objects to evaluate as well as their filenames */
     private HashMap<String, TreeMap<String, File>> submissions;
+
+    /** TreeMap of the feedback comments for each submission */
     private TreeMap<String, String> submissionFeedback;
+
+    /** Evaluator object for evaluating submissions */
     private Evaluator evaluator;
+
+    /** SubmissionDecompressor object for decompressing submissions zip folder */
     private SubmissionDecompressor submissionDecompressor;
+
+    /** Overall score for a submission */
     private double overallScore;
 
 
     /**
      * Default constructor - one argument
-     * @param zippedSubmissionsFilename Name of the zipped submissions file
+     * @param zippedSubmissionsFilename Name of the zipped submissions file in the resource directory
      */
     public AutoJudgeSystem(String zippedSubmissionsFilename) {
         this.setResourcesPath();
@@ -39,9 +56,9 @@ public class AutoJudgeSystem implements AutoJudge {
 
     /**
      * Overload constructor - two arguments
-     * @param resourcesPath Absolute path to the resources directory containing the 
-     * zipped submissions file
-     * @param zippedSubmissionsFilename Name of the zipped submissions file
+     * @param resourcesPath             Absolute path to the resources directory containing the 
+     *                                  zipped submissions file
+     * @param zippedSubmissionsFilename Name of the zipped submissions file in the resource directory
      */
     public AutoJudgeSystem(String resourcesPath, String zippedSubmissionsFilename) {
         this.setResourcesPath(resourcesPath);
@@ -57,17 +74,25 @@ public class AutoJudgeSystem implements AutoJudge {
 
     // Getters
 
+    /**
+     * Returns the absolute path to the resources directory
+     * @return String containing the absolute path to the resources directory
+     */
     public String getResourcesPath() {
         return this.resourcesPath;
     }
 
+    /**
+     * Returns the HashMap containing the submissions File objects to evaluate
+     * @return HashMap containing the submissions File objects
+     */
     public HashMap<String, TreeMap<String, File>> getSubmissions() {
         return this.submissions;
     }
-
-
+    
+    
     // Setters
-
+    
     /**
      * Sets the default path of the resources directory
      */
@@ -77,9 +102,10 @@ public class AutoJudgeSystem implements AutoJudge {
         path += (osName.contains("windows")) ? "\\src\\main\\resources\\" : "/src/main/resources/";
         this.resourcesPath = path;
     }
-
+    
     /**
-     * Sets the path of the resources directory to the supplied path
+     * Sets the path of the resources directory to the supplied path. If the supplied path does not
+     * end with a file separator, one is appended to the end of the path.
      * @param path Absolute path to the resources directory
      */
     public void setResourcesPath(String path) {
@@ -98,6 +124,10 @@ public class AutoJudgeSystem implements AutoJudge {
 
     // Methods
 
+    /**
+     * Displays the launch message for the AutoJudgeSystem. Uses the ASCIIGenerator class to
+     * generate ASCII art text.
+     */
     private final void displayLaunchMessage() {
         ASCIIGenerator gen = new ASCIIGenerator("AutoJudge");
         gen.drawString();
@@ -107,6 +137,10 @@ public class AutoJudgeSystem implements AutoJudge {
         System.out.println();
     }
 
+    
+    /**
+     * Extracts submissions and populates the submissions HashMap.
+     */
     private final void extractSubmissions() {
         TreeMap<String, File> submissionsFolder = new TreeMap<>();
         try { submissionsFolder = this.submissionDecompressor.decompress(); }
@@ -129,6 +163,9 @@ public class AutoJudgeSystem implements AutoJudge {
         System.out.println("Done. Found " + this.submissions.size() + " submissions\n");
     }
 
+    /**
+     * Removes the temporarily extracted zip files from the submissions directory
+     */
     private final void removeExtractedZipFiles() {
         for (String submission : this.submissions.keySet()) {
             File submissionFile = new File(this.resourcesPath + File.separator + submission);
@@ -209,9 +246,4 @@ public class AutoJudgeSystem implements AutoJudge {
         }
         System.out.println("Overall score: " + this.overallScore + "%");
     }
-
-    public double getOverallScore() {
-        return this.overallScore;
-    }
-    
 }

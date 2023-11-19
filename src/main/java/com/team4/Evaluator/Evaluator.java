@@ -6,11 +6,17 @@ import java.util.ArrayList;
 public class Evaluator implements SyntaxEvaluator {
     
     // Attributes
+
+    /** A Collection of SyntaxEvaluator objects used to evaluate a submission File */
     private ArrayList<SyntaxEvaluator> evaluators = new ArrayList<>();
+
+    /** The average score of the submission File after being evaluated by each SyntaxEvaluator */
     private double score;
 
     /**
-     * Default constructor
+     * Default constructor of an Evaluator composite class. <p>
+     * Will create an instance of each type of
+     * SyntaxEvaluator and store them into an internal Collection.
      */
     public Evaluator() {
         this.evaluators.add(new HierarchyEvaluator());
@@ -35,7 +41,13 @@ public class Evaluator implements SyntaxEvaluator {
 
 
     // Methods
-    
+
+    /**
+     * Evaluates the input File using all the SyntaxEvaluators stored in the internal Collection and
+     * computes an average score based on all the test cases passed per SyntaxEvaluator
+     * @param  javaDocument The File to be evaluated
+     * @return A decimal percentage score between 0.0 and 100.0
+     */
     @Override
     public double evaluate(File javaDocument) {
         for (SyntaxEvaluator evaluator : this.evaluators) {
