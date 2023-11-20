@@ -44,10 +44,20 @@ The target students of this project are primarily College/University students th
 | Iterator           | - AbstractTestCollectionIterator
 
 ## Benefits of Design Patterns Used
-- Facade: 
+- Facade: Manifested implicitly through the Evaluator class, which acts as a unified interface coordinating the evaluation of distinct aspects, including syntax, hierarchy, and behavior, in Java documents. 
+    Evaluator encapsulates the complexity by aggregating these evaluators and offering a simplified client interface (evaluate(File javaDocument)), shielding clients from the intricacies of individual evaluators. This design promotes modularity, ease of use, and clear abstraction of the underlying evaluation complexities. 
 - Composite: 
+    Hierarchy Coordination: The Evaluator class acts as a composite, coordinating different types of evaluators (syntax, hierarchy, conventions, behavior). This pattern allows treating individual evaluators uniformly.
+    Simplified Client Code: Clients (e.g., code using the Evaluator class) interact with a unified interface (evaluate(File javaDocument)), making the client code more straightforward. Clients don't need to understand the internal details of individual evaluators.
+    Encapsulation of Complexity: The internal details of each evaluator are encapsulated within their respective classes. The Evaluator shields the client from the complexity of the evaluation process.
 - Template: 
+    Algorithm Skeleton: The TestCase class provides a template method (testCriteria()) that defines the skeleton of an algorithm for evaluating test cases. Concrete subclasses provide specific implementations, allowing reuse of the common structure.
+    Consistency Across Subclasses: Ensures that the evaluation process follows a consistent structure across different types of test cases. This helps maintain a common interface while allowing variations in specific steps.
 - Iterator: 
+    Sequential Access: If there were collections or structures to iterate over, an iterator provides a consistent way to access elements sequentially without exposing underlying details.
+    Uniform Interface: Provides a uniform interface for traversing different types of collections or structures. This simplifies client code, making it independent of the specific structure being traversed.
+    Encapsulation of Iteration Logic: The iterator pattern encapsulates the logic for iterating over elements within the iterator object. This allows changing the traversal algorithm without affecting the client code.
+
 
 ## Conformance to SOLID
 This project conforms to the SOLID principles as follows:<br>
