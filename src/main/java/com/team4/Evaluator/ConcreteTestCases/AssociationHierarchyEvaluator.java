@@ -29,7 +29,13 @@ public class AssociationHierarchyEvaluator extends TestCase {
 
 
     // Methods
-
+    /**
+     * Checks if the specified file contains an association based on predefined criteria. 
+     * The method reads the file until it finds lines that match the specified association conditions.
+     * @return {@code true} if an association is found according to the predefined criteria, {@code false} otherwise.
+     * @throws Exception if an error occurs during file reading.
+     * The detailed error information is printed to the console.
+     */
     private boolean associationCheck() throws Exception {
         int iter = 0;
         String line = "";
