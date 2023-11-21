@@ -44,19 +44,35 @@ The target students of this project are primarily College/University students th
 | Iterator           | - AbstractTestCollectionIterator
 
 ## Benefits of Design Patterns Used
-- Facade: Manifested implicitly through the Evaluator class, which acts as a unified interface coordinating the evaluation of distinct aspects, including syntax, hierarchy, and behavior, in Java documents. 
-    Evaluator encapsulates the complexity by aggregating these evaluators and offering a simplified client interface (evaluate(File javaDocument)), shielding clients from the intricacies of individual evaluators. This design promotes modularity, ease of use, and clear abstraction of the underlying evaluation complexities. 
-- Composite: 
-    Hierarchy Coordination: The Evaluator class acts as a composite, coordinating different types of evaluators (syntax, hierarchy, conventions, behavior). This pattern allows treating individual evaluators uniformly.
-    Simplified Client Code: Clients (e.g., code using the Evaluator class) interact with a unified interface (evaluate(File javaDocument)), making the client code more straightforward. Clients don't need to understand the internal details of individual evaluators.
-    Encapsulation of Complexity: The internal details of each evaluator are encapsulated within their respective classes. The Evaluator shields the client from the complexity of the evaluation process.
-- Template: 
-    Algorithm Skeleton: The TestCase class provides a template method (testCriteria()) that defines the skeleton of an algorithm for evaluating test cases. Concrete subclasses provide specific implementations, allowing reuse of the common structure.
-    Consistency Across Subclasses: Ensures that the evaluation process follows a consistent structure across different types of test cases. This helps maintain a common interface while allowing variations in specific steps.
-- Iterator: 
-    Sequential Access: If there were collections or structures to iterate over, an iterator provides a consistent way to access elements sequentially without exposing underlying details.
-    Uniform Interface: Provides a uniform interface for traversing different types of collections or structures. This simplifies client code, making it independent of the specific structure being traversed.
-    Encapsulation of Iteration Logic: The iterator pattern encapsulates the logic for iterating over elements within the iterator object. This allows changing the traversal algorithm without affecting the client code.
+
+- ### Facade
+    - **Complexity Masking**<br>
+        Manifested implicitly through the AutoJudge and SyntaxEvaluator interfaces, which acts as unified fronts for orchestrating and coordinating the evaluation of distinct aspects code in Java documents.
+        - The AutoJudge interface provides three main focal methods that emulate the primary checkpoints during evaluation: `evaluateSubmissions()`, `generatePDFReport()` and `displayEvaluationResults()`.
+        - The SyntaxEvaluator interface encapsulates the complexity of submission evaluation by aggregating specialised evaluators and offering a simplified client interface `evaluate(File javaDocument)`, shielding clients from the intricacies of individual evaluators.
+        This design pattern promotes modularity, ease of use, and clear abstraction of the underlying complexities that comprise the AutoJudge system. 
+
+- ### Composite
+    - **Hierarchy Coordination**<br>
+        The Evaluator class acts as a composite, coordinating different types of evaluators (Hierarchy, Conventions & Behaviour). This pattern allows treating individual evaluators uniformly.
+    - **Simplified Client Code**<br>
+        Clients interact with a unified interface `evaluate(File javaDocument)`, making the client code more straightforward. Clients don't need to understand the internal details of an individual evaluatorm which would have their own implementation for evaluating a submission file.
+    - **Encapsulation of Complexity**<br>
+        The internal details of each evaluator are encapsulated within their respective classes. The Evaluator shields the client from the complexity of the evaluation process and simply allows for operating over multiple sub-components through a single method.
+
+- ### Template
+    - **Algorithm Skeleton**<br>
+        The AbstractTestCase interface provides a template method `testCriteria()`, that defines the skeleton of an algorithm for constructing a test cases. Concrete subclasses provide specific implementations, allowing re-use of the common structure.
+    - **Consistency Across Subclasses**<br>
+        Ensures that the evaluation process follows a consistent structure across different types of test cases. This helps maintain a common interface while allowing variations in specific steps.
+
+- ### Iterator
+    - **Sequential Access**<br>
+        If there were collections or structures to iterate over, an iterator provides a consistent way to access elements sequentially without exposing underlying details.
+    - **Uniform Interface**<br>
+        Provides a uniform interface for traversing different types of collections or structures. This simplifies client code, making it independent of the specific structure being traversed.
+    - **Encapsulation of Iteration Logic**<br>
+        The iterator pattern encapsulates the logic for iterating over elements within the iterator object. This allows changing the traversal algorithm without affecting the client code.
 
 
 ## Conformance to SOLID
@@ -68,8 +84,8 @@ This project conforms to the SOLID principles as follows:<br>
 **D** - Dependency Inversion Principle is obeyed such that every module is loosely-coupled and depends on abstractions<br>
 
 ## Class Diagram
-The following is an overview of the UML class diagram for AutoJudge
-[Insert image with hyperlink here]
+The following is an overview of the UML class diagram for AutoJudge<br>
+![AutoJudge UML Class Diagram](https://raw.githubusercontent.com/MadMoose02/AutoJudge/main/Team4_AutoJudge_UML_bkg.svg)<hr>
 
 
 # Implementation
