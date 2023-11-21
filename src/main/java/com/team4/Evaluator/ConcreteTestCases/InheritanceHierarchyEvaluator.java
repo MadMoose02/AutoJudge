@@ -12,7 +12,7 @@ public class InheritanceHierarchyEvaluator extends TestCase {
 
 
     /**
-     * Creates a test case to evaluate the association of a class.
+     * Creates a test case to evaluate the inheritance of a class.
      * @param testName Name of the test case
      * @param testFile File to be evaluated
      * @param parameters Expected parameters of the constructor
@@ -30,6 +30,14 @@ public class InheritanceHierarchyEvaluator extends TestCase {
         return this.feedbackCommentSB.toString();    
     }
 
+    /**
+     * Checks if the specified file contains a class declaration with inheritance. 
+     * The method reads the file until it finds a class declaration and 
+     * checks if it extends another class.
+     * @return {@code true} if the class in the file extends another class, {@code false} otherwise.
+     * @throws Exception if an error occurs during file reading.
+     * The detailed error information is printed to the console.
+     */
     private boolean inheritanceCheck() throws Exception {
         int iter = 0;
         String line = "";
