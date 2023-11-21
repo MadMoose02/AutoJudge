@@ -4,7 +4,14 @@ import java.io.File;
 import java.util.Scanner;
 
 import com.team4.Evaluator.TestCase.TestCase;
-
+/**
+ * A concrete subclass of the TestCase class that evaluates the association of a class.
+ * It contains a constructor which initialises attributes based on given parameters 
+ * One of the attributes in the constructor is initialized via the extraction of the  filename.
+ * The constructor also initializes an attribute as a StringBuilder.
+ * This class has a unique method which determines whether or not an association exists between specific classes.
+ * It overrides a class that was inherited by TestCase. 
+ */
 public class AssociationHierarchyEvaluator extends TestCase {
 
     private String evalClassName;
@@ -49,7 +56,7 @@ public class AssociationHierarchyEvaluator extends TestCase {
                 if (++iter > MAX_LINES) break;
                 line = scan.nextLine();
 
-                // Check if attributes are present
+                // Checks if the specified file contains the required association 
                 if (!line.contains(".") && this.evalClassName.equals("LuggageManagementSystem") && line.contains(this.associationType)) {
                     scan.close();
                     return true;
@@ -75,7 +82,7 @@ public class AssociationHierarchyEvaluator extends TestCase {
     public boolean testCriteria() throws Exception {
         boolean status = false;
 
-
+        //Feedback comments produced based on result of the association check
         if (!(status = this.associationCheck())) {
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
