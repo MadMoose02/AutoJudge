@@ -77,11 +77,13 @@ The target students of this project are primarily College/University students th
 
 ## Conformance to SOLID
 This project conforms to the SOLID principles as follows:<br>
-**S** - Single Responsibility Principle of each class is enforced. Delegations are made where necessary<br>
-**O** - Open/Closed Priciple of all modules is adhered to, whereby all are open to extension but closed to modification<br>
-**L** - Liskov Substitution Principle is complied with to ensure that sub-modules of a major module can be interchanged<br>
-**I** - Interface Segregation Principle is maximally observed to ensure that no module is required to use code that it does not need<br>
-**D** - Dependency Inversion Principle is obeyed such that every module is loosely-coupled and depends on abstractions<br>
+| **Principle** | **Application** |
+| ------------- | --------------- |
+| **S** | Single Responsibility Principle of each class is enforced. Delegations are made where necessary |
+| **O** | Open/Closed Priciple of all modules is adhered to, whereby all are open to extension but closed to modification |
+| **L** | Liskov Substitution Principle is complied with to ensure that sub-modules of a major module can be interchanged |
+| **I** | Interface Segregation Principle is maximally observed to ensure that no module is required to use code that it does not need |
+| **D** | Dependency Inversion Principle is obeyed such that every module is loosely-coupled and depends on abstractions |
 
 ## Class Diagram
 The following is an overview of the UML class diagram for AutoJudge<br>
