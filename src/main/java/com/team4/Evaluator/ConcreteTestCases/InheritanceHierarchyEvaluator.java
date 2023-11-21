@@ -5,6 +5,13 @@ import java.util.Scanner;
 
 import com.team4.Evaluator.TestCase.TestCase;
 
+/**
+ * A concrete subclass of the TestCase class that evaluates the inheritance of a class.
+ * It contains a constructor which initialises attributes based on given parameters.
+ * The constructor also initializes an attribute as a StringBuilder.
+ * This class has a unique method which determines whether or not one class is inheriting from another. 
+ * It overrides a class that was inherited by TestCase. 
+ */
 public class InheritanceHierarchyEvaluator extends TestCase {
     private StringBuilder feedbackCommentSB;
     private String failureMsg;
@@ -24,7 +31,7 @@ public class InheritanceHierarchyEvaluator extends TestCase {
 
 
     // Methods
-
+    //Produces feedback comments specific to the outcome of the inheritance check
     @Override
     public String getFeedbackComments() {
         return this.feedbackCommentSB.toString();    
@@ -51,11 +58,12 @@ public class InheritanceHierarchyEvaluator extends TestCase {
                 if (++iter > MAX_LINES) break;
                 line = scan.nextLine();
 
-                // Check if attributes are present
+                // Check if class declaration is found and 
+                // whether or not it contains the keyword "extends"
                 if (line.contains("class") && line.contains("extends")) {
                     scan.close();
                     return true;
-                } else if (line.contains("class")){
+                } else if (line.contains("class")){ 
                     scan.close();
                     this.failureMsg = "No inheritance found ";
                     return false;
@@ -75,6 +83,7 @@ public class InheritanceHierarchyEvaluator extends TestCase {
     public boolean testCriteria() throws Exception {
         boolean status = false;
 
+        //Feedback comments produced based on result of the inheritance check
         if (!(status = this.inheritanceCheck())) {
             this.feedbackCommentSB.append(this.failureMsg);
             this.feedbackCommentSB.append("\n");
