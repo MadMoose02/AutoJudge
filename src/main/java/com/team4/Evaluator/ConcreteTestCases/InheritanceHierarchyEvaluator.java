@@ -13,8 +13,13 @@ import com.team4.Evaluator.TestCase.TestCase;
  * It overrides a class that was inherited by TestCase. 
  */
 public class InheritanceHierarchyEvaluator extends TestCase {
+    /** Feedback comments generated for the submission File by the StringBuilder */
     private StringBuilder feedbackCommentSB;
+    
+    /** Failure message that is displayed if the test case fails */
     private String failureMsg;
+    
+    /** Number of test cases passed */
     private int numTestsPassed = 0;
 
 
