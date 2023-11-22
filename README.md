@@ -40,8 +40,8 @@ The target students of this project are primarily College/University students th
 | ------------------ | ------------------------ |
 | Facade             | - [AutoJudge](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/AutoJudge.java)
 | Composite          | - [SyntaxEvaluator](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/Evaluator/SyntaxEvaluator.java) (interface) <br>- [Evaluator](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/Evaluator/Evaluator.java) (composite)<br>- [BehaviourEvaluator](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/Evaluator/BehaviourEvaluator.java) (leaf)<br>- [HierarchyEvaluator](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/Evaluator/HierarchyEvaluator.java) (leaf)<br>- [ConventionsEvaluator](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/Evaluator/ConventionsEvaluator.java) (leaf)
-| Template           | - [AbstractTestCase](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/TestCase/AbstractTestCase.java)
-| Iterator           | - [AbstractTestCollectionIterator](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/TestCase/AbstractTestCollectionIterator.java)
+| Template           | - [AbstractTestCase](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/Evaluator/TestCase/AbstractTestCase.java)
+| Iterator           | - [AbstractTestCollectionIterator](https://github.com/MadMoose02/AutoJudge/blob/main/src/main/java/com/team4/Evaluator/TestCase/AbstractTestCollectionIterator.java)
 
 ## Benefits of Design Patterns Used
 
