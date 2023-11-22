@@ -46,7 +46,7 @@ public class SubmissionDecompressorTest {
             System.out.println("Extracted " + submission.size() + " files from " + submissionName);
         }
 
-        assertEquals(3, this.submissions.size());
+        assertEquals(5, this.submissions.size());
         for (String submissionName : this.submissions.keySet()) {
             assertEquals(20, this.submissions.get(submissionName).size(), 15);
         }
