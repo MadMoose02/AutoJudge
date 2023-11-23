@@ -11,15 +11,15 @@ public class ReportGeneratorTest {
     @Test
     public void testGeneratePDF() throws IOException {
         String testFilePath = System.getProperty("user.dir") + File.separator 
-            + "src" + File.separator + "test" + File.separator + "resources" 
-            + "src" + File.separator + "test" + File.separator + "resources";
+            + "src" + File.separator + "test" + File.separator + "resources" + File.separator
+            + "Submissions";
 
         ReportGenerator gen = new ReportGenerator(
             testFilePath,
             "John Doe", 
             "123456789"
         );
-        gen.addEntryToReport("This is a test feedback entry", 100.0);
+        gen.addEntryToReport("This is a test feedback entry");
         gen.generateReport();
     }
 }
